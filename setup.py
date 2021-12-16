@@ -1,5 +1,5 @@
 """
-This is the setup module for the example project.
+This is the setup module for the mdyml project.
 
 Based on:
 
@@ -42,10 +42,10 @@ def get_version(version_file):
 
 
 setup(
-    name="example",
+    name="mdyml",
     # Versions should comply with PEP440
-    version=get_version("src/example/_version.py"),
-    description="Example Python library",
+    version=get_version("src/mdyml/_version.py"),
+    description="mdyml Python library",
     long_description=readme(),
     long_description_content_type="text/markdown",
     # Landing page for CISA's cybersecurity mission
@@ -74,17 +74,16 @@ setup(
         # Specify the Python versions you support here. In particular, ensure
         # that you indicate whether you support Python 2, Python 3 or both.
         "Programming Language :: Python :: 3",
-        "Programming Language :: Python :: 3.6",
-        "Programming Language :: Python :: 3.7",
         "Programming Language :: Python :: 3.8",
         "Programming Language :: Python :: 3.9",
+        "Programming Language :: Python :: 3.10",
     ],
-    python_requires=">=3.6",
+    python_requires=">=3.8",
     # What does your project relate to?
     keywords="skeleton",
     packages=find_packages(where="src"),
     package_dir={"": "src"},
-    package_data={"example": ["data/*.txt"]},
+    package_data={"mdyml": ["data/*.txt"]},
     py_modules=[splitext(basename(path))[0] for path in glob("src/*.py")],
     include_package_data=True,
     install_requires=["docopt", "schema", "setuptools >= 24.2.0"],
@@ -103,6 +102,10 @@ setup(
             "pytest",
         ]
     },
-    # Conveniently allows one to run the CLI tool as `example`
-    entry_points={"console_scripts": ["example = example.example:main"]},
+    # Conveniently allows one to run the CLI tools
+    entry_points={
+        "console_scripts": [
+            "convert_nscs_nl = mdyml.convert_ncsc_nl:main",
+        ]
+    },
 )
