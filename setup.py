@@ -111,6 +111,7 @@ setup(
     # Conveniently allows one to run the CLI tools
     entry_points={
         "console_scripts": [
+            "convert_cisagov = mdyml.convert_cisagov:main",
             "convert_nscs_nl = mdyml.convert_ncsc_nl:main",
         ]
     },
