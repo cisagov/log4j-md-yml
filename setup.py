@@ -89,6 +89,7 @@ setup(
     install_requires=[
         "dateparser",
         "docopt",
+        "pytz",
         "pyyaml",
         "schema",
         "setuptools >= 24.2.0",

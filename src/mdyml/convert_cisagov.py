@@ -22,7 +22,6 @@ Options:
 from datetime import datetime, timezone
 import html
 import logging
-import pytz
 import re
 import sys
 from typing import Any
@@ -31,6 +30,7 @@ import urllib.request
 # Third-Party Libraries
 import dateparser
 import docopt
+import pytz
 from schema import And, Schema, SchemaError, Use
 import yaml
 
