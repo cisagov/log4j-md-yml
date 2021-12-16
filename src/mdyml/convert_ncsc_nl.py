@@ -88,7 +88,6 @@ def convert() -> None:
         row_dict["patched_versions"] = []
         row_dict["references"] = []
         row_dict["reporter"] = "ncsc-nl"
-        row_dict["status"] = row_dict["status"]
         row_dict["last_updated"] = datetime.now(timezone.utc).isoformat(
             timespec="seconds"
         )
