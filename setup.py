@@ -86,7 +86,13 @@ setup(
     package_data={"mdyml": ["data/*.txt"]},
     py_modules=[splitext(basename(path))[0] for path in glob("src/*.py")],
     include_package_data=True,
-    install_requires=["docopt", "pyyaml", "schema", "setuptools >= 24.2.0"],
+    install_requires=[
+        "dateparser",
+        "docopt",
+        "pyyaml",
+        "schema",
+        "setuptools >= 24.2.0",
+    ],
     extras_require={
         "test": [
             "coverage",
