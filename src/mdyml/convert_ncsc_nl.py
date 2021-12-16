@@ -22,7 +22,6 @@ Options:
 from datetime import datetime, timezone
 import html
 import logging
-import re
 import sys
 from typing import Any
 import urllib.request
@@ -32,10 +31,9 @@ import docopt
 from schema import And, Schema, SchemaError, Use
 import yaml
 
-from . import ORDERED_FIELD_NAMES, _version
+from . import MD_LINK_RE, ORDERED_FIELD_NAMES, _version
 
 RAW_URL = "https://raw.githubusercontent.com/NCSC-NL/log4shell/main/software/README.md"
-MD_LINK_RE = re.compile(r"\[(?P<text>.*?)\]\((?P<link>.*?)\)")
 
 
 def convert() -> None:
