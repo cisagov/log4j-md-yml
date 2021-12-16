@@ -44,17 +44,7 @@ def convert() -> None:
     # Get the markdown
     response = urllib.request.urlopen(RAW_URL)
 
-    # Find the start of the table in markdown
-    for raw_line in response:
-        line = raw_line.decode("utf-8")
-        if line.startswith("|") and "Supplier" in line:
-            break
-
-    # Extract field names from header line
-    table_field_names = line.split("|")[1:-1]
-    assert len(table_field_names) == 6, "Expected 6 fields in header line"
-
-    # Read rows from all following tables
+    # Read rows from all tables
     table_rows = []
     in_table = False
     skip_next_line = False
@@ -64,6 +54,8 @@ def convert() -> None:
             skip_next_line = False
             continue
         if not in_table and line.startswith("|") and "Supplier" in line:
+            table_field_names = line.split("|")[1:-1]
+            assert len(table_field_names) == 6, "Expected 6 fields in header line"
             in_table = True
             skip_next_line = True
             continue
