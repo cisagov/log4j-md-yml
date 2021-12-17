@@ -89,6 +89,7 @@ setup(
     install_requires=[
         "dateparser",
         "docopt",
+        "pytablewriter",
         "pytz",
         "pyyaml",
         "schema",
@@ -115,6 +116,7 @@ setup(
             "convert_cisagov = mdyml.convert_cisagov:main",
             "convert_nscs_nl = mdyml.convert_ncsc_nl:main",
             "normalize_yml = yml.normalize_yml:main",
+            "yml2md = ymlmd.yml2md:main",
         ]
     },
 )
