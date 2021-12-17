@@ -35,6 +35,16 @@ from . import MD_LINK_RE, ORDERED_FIELD_NAMES, _version
 
 RAW_URL = "https://raw.githubusercontent.com/NCSC-NL/log4shell/main/software/README.md"
 
+EXPECTED_COLUMN_NAMES = [
+    "vendor",
+    "product",
+    "affected_versions",
+    "status",
+    "notes",
+    "vendor_link",
+]
+EXPECTED_COLUMN_COUNT = len(EXPECTED_COLUMN_NAMES)
+
 
 def convert() -> None:
     # Parse the markdown at the given URL and convert it to YAML.
@@ -52,8 +62,10 @@ def convert() -> None:
             skip_next_line = False
             continue
         if not in_table and line.startswith("|") and "Supplier" in line:
-            table_field_names = line.split("|")[1:-1]
-            assert len(table_field_names) == 6, "Expected 6 fields in header line"
+            header_names = line.split("|")[1:-1]
+            assert (
+                len(header_names) == EXPECTED_COLUMN_COUNT
+            ), f"Expected {EXPECTED_COLUMN_COUNT} fields in header line, found {len(header_names)}: {header_names}"
             in_table = True
             skip_next_line = True
             continue
@@ -61,24 +73,25 @@ def convert() -> None:
             in_table = False
             continue
         if in_table:
-            table_rows.append(line[1:-1])
-
-    # Set our field names that line up with the columns in the table
-    table_field_names = [
-        "vendor",
-        "product",
-        "affected_versions",
-        "status",
-        "notes",
-        "vendor_link",
-    ]
+            table_rows.append(line)
 
     all_rows = []
+    row_count = 0
     for row in table_rows:
-        row_data = row.split("|")
-        row_data = [cell.strip() for cell in row_data]
-        # Combine header fields with data into a dict
-        row_dict = dict(zip(table_field_names, row_data))
+        row_count += 1
+        row_data = row.split("|")[1:-1]
+        logging.debug(
+            "Processing line %d with %d columns: %s", row_count, len(row_data), row
+        )
+        if len(row_data) != EXPECTED_COLUMN_COUNT:
+            logging.warning(
+                "Skipping line %d with unexpected number of columns %d: %s",
+                row_count,
+                len(row_data),
+                row_data,
+            )
+            continue
+        row_dict = dict(zip(EXPECTED_COLUMN_NAMES, row_data))
         if row_dict["affected_versions"]:
             row_dict["affected_versions"] = [row_dict["affected_versions"]]
         else:
