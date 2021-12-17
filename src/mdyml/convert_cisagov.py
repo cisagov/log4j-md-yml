@@ -38,6 +38,7 @@ from . import MD_LINK_RE, ORDERED_FIELD_NAMES, _version
 RAW_URL = (
     "https://raw.githubusercontent.com/cisagov/log4j-affected-db/develop/README.md"
 )
+EXPECTED_COLUMNS = 9
 
 
 def convert() -> None:
@@ -55,9 +56,11 @@ def convert() -> None:
         if skip_next_line:
             skip_next_line = False
             continue
-        if not in_table and line.startswith("|") and "Supplier" in line:
+        if not in_table and line.startswith("|") and "Vendor link" in line:
             table_field_names = line.split("|")[1:-1]
-            assert len(table_field_names) == 9, "Expected 9 fields in header line"
+            assert (
+                len(table_field_names) == EXPECTED_COLUMNS
+            ), f"Expected {EXPECTED_COLUMNS} fields in header line, found: {table_field_names}"
             in_table = True
             skip_next_line = True
             continue
@@ -73,7 +76,7 @@ def convert() -> None:
         "product",
         "affected_versions",
         "status",
-        "update_available",  # This field will be ignored
+        "update_available",  # This field will be ignored as it can be inferred from patched_versions
         "vendor_link",
         "notes",
         "references",
