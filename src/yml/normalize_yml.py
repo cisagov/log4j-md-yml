@@ -87,7 +87,7 @@ def main() -> int:
     )
 
     # Do that voodoo that you do so well...
-    print(sort(normalize(munge(validated_args["<yml_file>"]))))
+    print(yaml.dump(sort(normalize(munge(validated_args["<yml_file>"])))))
 
     # Stop logging and clean up
     logging.shutdown()
