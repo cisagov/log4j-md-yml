@@ -13,7 +13,7 @@ MD_LINK_RE = re.compile(r"\[(?P<text>.*?)\]\((?P<link>.*?)\)")
 ORDERED_FIELD_NAMES = [
     "vendor",
     "product",
-    "status",
+    "investigated",
     "affected_versions",
     "patched_versions",
     "vendor_link",

@@ -39,7 +39,7 @@ EXPECTED_COLUMN_NAMES = [
     "vendor",
     "product",
     "affected_versions",
-    "status",
+    "investigated",
     "notes",
     "vendor_link",
 ]
@@ -95,6 +95,11 @@ def convert() -> None:
         row_data = [field.strip() for field in row_data]
         # Create a dictionary from the row data
         row_dict = dict(zip(EXPECTED_COLUMN_NAMES, row_data))
+        row_dict["investigated"] = row_dict["investigated"].lower() in (
+            "fix",
+            "not vuln" "vulnerable",
+            "workaround",
+        )
         if row_dict["affected_versions"]:
             row_dict["affected_versions"] = [row_dict["affected_versions"]]
         else:
