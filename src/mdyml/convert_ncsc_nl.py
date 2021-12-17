@@ -91,6 +91,9 @@ def convert() -> None:
                 row_data,
             )
             continue
+        # Trim whitespace from each field
+        row_data = [field.strip() for field in row_data]
+        # Create a dictionary from the row data
         row_dict = dict(zip(EXPECTED_COLUMN_NAMES, row_data))
         if row_dict["affected_versions"]:
             row_dict["affected_versions"] = [row_dict["affected_versions"]]
