@@ -114,14 +114,13 @@ def convert() -> None:
         row_dict["patched_versions"] = []
         row_dict["references"] = [row_dict["references"]]
         row_dict["reporter"] = "cisagov"
-        if row_dict["last_updated"]:
-            # Parse the existing date
-            parsed_date = dateparser.parse(row_dict["last_updated"])
-            # Check if the parsed date has a timezone
+        # Parse the existing date, or not
+        if parsed_date := dateparser.parse(row_dict["last_updated"]):
+            # Check if parsed date has a timezone
             if parsed_date.tzinfo is None:
-                # Add the UTC timezone
+                # Add the UTC timezone to the parsed date
                 parsed_date = pytz.utc.localize(parsed_date)
-            row_dict["last_updated"] = parsed_date.isoformat(timespec="seconds")
+                row_dict["last_updated"] = parsed_date.isoformat(timespec="seconds")
         else:
             row_dict["last_updated"] = datetime.now(timezone.utc).isoformat(
                 timespec="seconds"
