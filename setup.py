@@ -114,6 +114,7 @@ setup(
         "console_scripts": [
             "convert_cisagov = mdyml.convert_cisagov:main",
             "convert_nscs_nl = mdyml.convert_ncsc_nl:main",
+            "normalize_yml = yml.normalize_yml:main",
         ]
     },
 )
