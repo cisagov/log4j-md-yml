@@ -37,9 +37,9 @@ TableData = list[list[Any]]
 DataConversionMap = {
     "vendor": "Vendor",
     "product": "Product",
-    # "investigated": "Investigated",
     "affected_versions": "Affected Versions",
     "patched_versions": "Patched Versions",
+    "status": "Status",
     "vendor_link": "Vendor Link",
     "notes": "Notes",
     "references": "References",
@@ -57,15 +57,34 @@ def load(filename: str) -> Software:
     return ans
 
 
+def calculate_status(software: Software) -> Software:
+    """Calculate status field for each software entry."""
+    for s in software:
+        if len(s["affected_versions"]) == 0:
+            if len(s["patched_versions"]) == 0:
+                if s["investigated"]:
+                    s["status"] = "Not Affected"
+                else:
+                    s["status"] = "Unknown"
+            else:  # patched_versions is not empty
+                s["status"] = "Fixed"
+        else:  # affected versions is not empty
+            if len(s["patched_versions"]) == 0:
+                s["status"] = "Affected"
+            else:
+                s["status"] = "Fixed"
+    return software
+
+
 def convert_data_format(software: Software) -> TableData:
     """Convert the YML data into a format that pytablewriter likes."""
     return [
         [
             s["vendor"],
             s["product"],
-            # s["investigated"],
             ",".join([x for x in s["affected_versions"] if len(x) != 0]),
             ",".join([x for x in s["patched_versions"] if len(x) != 0]),
+            s["status"],
             s["vendor_link"],
             s["notes"],
             "\n".join([x for x in s["references"] if len(x) != 0]),
@@ -119,7 +138,9 @@ def main() -> int:
     )
 
     # Do that voodoo that you do so well...
-    generate_markdown(convert_data_format(load(validated_args["<yml_file>"])))
+    generate_markdown(
+        convert_data_format(calculate_status(load(validated_args["<yml_file>"])))
+    )
 
     # Stop logging and clean up
     logging.shutdown()
