@@ -89,7 +89,6 @@ setup(
     install_requires=[
         "dateparser",
         "docopt",
-        "pytablewriter",
         "pytz",
         "pyyaml",
         "schema",

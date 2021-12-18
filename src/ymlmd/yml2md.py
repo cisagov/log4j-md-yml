@@ -24,28 +24,14 @@ import sys
 from typing import Any
 
 # Third-Party Libraries
+import dateparser
 import docopt
-from pytablewriter import MarkdownTableWriter
 from schema import And, Schema, SchemaError, Use
 import yaml
 
 from . import _version
 
 Software = list[dict[str, Any]]
-TableData = list[list[Any]]
-
-DataConversionMap = {
-    "vendor": "Vendor",
-    "product": "Product",
-    "affected_versions": "Affected Versions",
-    "patched_versions": "Patched Versions",
-    "status": "Status",
-    "vendor_link": "Vendor Link",
-    "notes": "Notes",
-    "references": "References",
-    "reporter": "Reporter",
-    "last_updated": "Last Updated",
-}
 
 
 def load(filename: str) -> Software:
@@ -76,33 +62,39 @@ def calculate_status(software: Software) -> Software:
     return software
 
 
-def convert_data_format(software: Software) -> TableData:
-    """Convert the YML data into a format that pytablewriter likes."""
-    return [
-        [
-            s["vendor"],
-            s["product"],
-            ",".join([x for x in s["affected_versions"] if len(x) != 0]),
-            ",".join([x for x in s["patched_versions"] if len(x) != 0]),
-            s["status"],
-            s["vendor_link"],
-            s["notes"],
-            "\n".join([x for x in s["references"] if len(x) != 0]),
-            s["reporter"],
-            s["last_updated"],
-        ]
-        for s in software
-    ]
-
-
-def generate_markdown(data: TableData) -> None:
-    """Generate the Markdown table."""
-    writer = MarkdownTableWriter(
-        headers=DataConversionMap.values(),
-        value_matrix=data,
+def generate_markdown(software: Software) -> None:
+    """Generate markdown manually."""
+    # Print header
+    print(
+        "| Vendor | Product | Affected Versions | Patched Versions | Status | Vendor Link | Notes | References | Reporter | Last Updated |"
     )
-
-    writer.write_table(flavor="github")
+    print(
+        "| ------ | ------- | ----------------- | ---------------- | ------ | ----------- | ----- | ---------- | -------- | ------------ |"
+    )
+    # Print table converting lists to comma separated strings
+    for s in software:
+        print(
+            "| {vendor} | {product} | {affected_versions} | {patched_versions} | {status} | {vendor_link} | {notes} | {references} | {reporter} | {last_updated} |".format(
+                vendor=s["vendor"],
+                product=s["product"],
+                affected_versions=",".join(
+                    [x for x in s["affected_versions"] if len(x) != 0]
+                ),
+                patched_versions=",".join(
+                    [x for x in s["patched_versions"] if len(x) != 0]
+                ),
+                status=s["status"],
+                # convert vendor link to markdown link if it starts with http
+                vendor_link=f'[link]({s["vendor_link"]})'
+                if s["vendor_link"].startswith("http")
+                else s["vendor_link"],
+                notes=s["notes"],
+                references="; ".join([x for x in s["references"] if len(x) != 0]),
+                reporter=s["reporter"],
+                # create a datetime from string and print date portion
+                last_updated=dateparser.parse(s["last_updated"]).strftime("%Y-%m-%d"),
+            )
+        )
 
 
 def main() -> int:
@@ -138,9 +130,7 @@ def main() -> int:
     )
 
     # Do that voodoo that you do so well...
-    generate_markdown(
-        convert_data_format(calculate_status(load(validated_args["<yml_file>"])))
-    )
+    generate_markdown(calculate_status(load(validated_args["<yml_file>"])))
 
     # Stop logging and clean up
     logging.shutdown()
