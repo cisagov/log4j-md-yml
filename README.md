@@ -6,20 +6,73 @@
 [![Language grade: Python](https://img.shields.io/lgtm/grade/python/g/cisagov/md-table-to-yml.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/cisagov/md-table-to-yml/context:python)
 [![Known Vulnerabilities](https://snyk.io/test/github/cisagov/md-table-to-yml/develop/badge.svg)](https://snyk.io/test/github/cisagov/md-table-to-yml)
 
-This is a generic skeleton project that can be used to quickly get a
-new [cisagov](https://github.com/cisagov) Python library GitHub
-project started.  This skeleton project contains [licensing
-information](LICENSE), as well as
-[pre-commit hooks](https://pre-commit.com) and
-[GitHub Actions](https://github.com/features/actions) configurations
-appropriate for a Python library project.
+This repository contains Python code to:
 
-## New Repositories from a Skeleton ##
+1. Translate the Markdown table of vulnerable software from
+   [NCSC-NL/log4shell](https://github.com/NCSC-NL/log4shell) into a
+   common YML format.
+1. Merge the YML from the previous step with the YML from
+   [cisagov/log4j-affected-db](https://github.com/cisagov/log4j-affected-db)
+   into one grand YML file.
+1. Generate a Markdown table from the YML output of the previous step.
 
-Please see our [Project Setup guide](https://github.com/cisagov/development-guide/tree/develop/project_setup)
-for step-by-step instructions on how to start a new repository from
-a skeleton. This will save you time and effort when configuring a
-new repository!
+## Common YML format ##
+
+The common YML format looks like this:
+
+```yaml
+---
+version: '1.0'
+software:
+- affected_versions:
+    - 1.1
+    - 1.2
+  last_updated: '2021-12-17T16:21:12+00:00'
+  notes: Blah blah blah
+  patched_versions:
+    - >1.1,<1.2
+    - >1.2,<1.3
+    - >=1.3
+  product: ProductA
+  references:
+    - https://www.reddit.com/r/Vendor1/comments/abcdef/log4j
+  reporter: cisagov
+  status: Fix
+  vendor: Vendor1
+  vendor_links:
+    - https://vendor1.com/discussion/comment/622612/#Comment_622612
+- affected_versions:
+    - 2.2
+  last_updated: '2021-12-18T16:21:12+00:00'
+  notes: Blah blah blah
+  patched_versions:
+    - >=2.2
+  product: ProductB
+  references:
+    - https://www.computerings.com/Vendor2/log4j_vulnerability
+    - https://www.zazz.org/new_vulnerability
+  reporter: cisagov
+  status: Fix
+  vendor: Vendor2
+  vendor_links:
+    - https://vendor2.com/ReleaseNotes
+...
+```
+
+The fields and their descriptions are as follows:
+
+| Field  | Description |
+| ------ | ----------- |
+| `affected_versions` | A list of the versions of the product that are vulnerable to the log4j vulnerability. |
+| `last_updated` | The [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) timestamp denoting when the product information was last updated. |
+| `notes` | A free-form text field for additional notes. |
+| `patched_versions` | A list of the versions of the product that are patched and therefore unaffected by the log4j vulnerability. |
+| `product` | The name of the software product. |
+| `references` | A list of links to non-vendor sources concerning the software product and the log4j vulnerability. |
+| `reporter` | The entity reporting information about the software product. |
+| `status` | The current status of the software product with respect to the log4j vulnerability. |
+| `vendor` | The name of the software vendor. |
+| `vendor_links` | A list of links to the vendor's website concerning the software product and the log4j vulnerability. |
 
 ## Contributing ##
 
