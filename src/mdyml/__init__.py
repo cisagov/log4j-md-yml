@@ -8,19 +8,15 @@ import re
 
 from ._version import __version__  # noqa: F401
 
+DEFAULT_CVE_ID = "cve-2021-44228"
+
 MD_LINK_RE = re.compile(r"\[(?P<text>.*?)\]\((?P<link>.*?)\)")
 
-ORDERED_FIELD_NAMES = [
-    "vendor",
-    "product",
-    "investigated",
-    "affected_versions",
-    "patched_versions",
-    "vendor_link",
-    "notes",
-    "references",
-    "reporter",
-    "last_updated",
+ORDERED_CVE_IDS = [
+    "cve-2021-4104",
+    DEFAULT_CVE_ID,
+    "cve-2021-45046",
+    "cve-2021-45105",
 ]
 
-__all__ = ["MD_LINK_RE", "ORDERED_FIELD_NAMES"]
+__all__ = ["DEFAULT_CVE_ID", "MD_LINK_RE", "ORDERED_CVE_IDS"]

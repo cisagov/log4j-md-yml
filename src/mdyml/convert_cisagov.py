@@ -29,11 +29,10 @@ import urllib.request
 # Third-Party Libraries
 import dateparser
 import docopt
-import pytz
 from schema import And, Schema, SchemaError, Use
 import yaml
 
-from . import MD_LINK_RE, ORDERED_FIELD_NAMES, _version
+from . import DEFAULT_CVE_ID, MD_LINK_RE, ORDERED_CVE_IDS, _version
 
 RAW_URL = (
     "https://raw.githubusercontent.com/cisagov/log4j-affected-db/develop/README.md"
@@ -42,8 +41,8 @@ RAW_URL = (
 EXPECTED_COLUMN_NAMES = [
     "vendor",
     "product",
-    "affected_versions",
-    "investigated",
+    "versions",
+    "status",
     "update_available",  # This column will be ignored as it can be inferred from patched_versions
     "vendor_link",
     "notes",
@@ -57,6 +56,7 @@ def convert() -> None:
     # Parse the markdown at the given URL and convert it to YAML.
 
     # Get the markdown
+    logging.info("Reading markdown at %s", RAW_URL)
     response = urllib.request.urlopen(RAW_URL)
 
     # Read rows from all tables
@@ -76,65 +76,91 @@ def convert() -> None:
             in_table = True
             skip_next_line = True
             continue
-        if not line.startswith("|"):
-            in_table = False
+        if in_table and not line.startswith("|"):
+            logging.warning("Line does not start with |, skipping: %s", line)
             continue
         if in_table:
             table_rows.append(line)
+    logging.info("Done reading markdown table %d rows.", len(table_rows))
 
-    all_rows = []
+    # Process all the data into a list of dictionaries
+    out_dict_list = []
     row_count = 0
     for row in table_rows:
         row_count += 1
-        row_data = row.split("|")[1:-1]
+        in_row_list = row.split("|")[1:-1]
         logging.debug(
-            "Processing line %d with %d columns: %s", row_count, len(row_data), row
+            "Processing line %d with %d columns: %s", row_count, len(in_row_list), row
         )
-        if len(row_data) != EXPECTED_COLUMN_COUNT:
+        if len(in_row_list) != EXPECTED_COLUMN_COUNT:
             logging.warning(
                 "Skipping line %d with unexpected number of columns %d: %s",
                 row_count,
-                len(row_data),
-                row_data,
+                len(in_row_list),
+                in_row_list,
             )
             continue
         # Trim whitespace from each field
-        row_data = [field.strip() for field in row_data]
+        in_row_list = [field.strip() for field in in_row_list]
         # Create a dictionary from the row data
-        row_dict = dict(zip(EXPECTED_COLUMN_NAMES, row_data))
-        row_dict["investigated"] = row_dict["investigated"].lower() in (
-            "affected",
-            "fixed",
-            "not affected",
-        )
-        if row_dict["affected_versions"]:
-            row_dict["affected_versions"] = [row_dict["affected_versions"]]
+        in_row_dict = dict(zip(EXPECTED_COLUMN_NAMES, in_row_list))
+        # Create a dictionary for our calculated output
+        out_dict = {}
+        out_dict["vendor"] = in_row_dict["vendor"]
+        out_dict["product"] = in_row_dict["product"]
+        out_dict["cves"] = {}
+        for cve in ORDERED_CVE_IDS:
+            out_dict["cves"][cve] = {
+                "investigated": False,
+                "affected_versions": [],
+                "fixed_versions": [],
+                "unaffected_versions": [],
+            }
+
+        # Determine where the data from the versions column is routed using the status column
+        if in_row_dict["versions"]:
+            # Spit versions out by comma and trim whitespace
+            versions = [v.strip() for v in in_row_dict["versions"].split(",")]
+            match in_row_dict["status"].lower():
+                case "not affected":
+                    out_dict["cves"][DEFAULT_CVE_ID]["investigated"] = True
+                    out_dict["cves"][DEFAULT_CVE_ID]["unaffected_versions"] = versions
+                case "affected":
+                    out_dict["cves"][DEFAULT_CVE_ID]["investigated"] = True
+                    out_dict["cves"][DEFAULT_CVE_ID]["affected_versions"] = versions
+                case "fixed":
+                    out_dict["cves"][DEFAULT_CVE_ID]["investigated"] = True
+                    out_dict["cves"][DEFAULT_CVE_ID]["fixed_versions"] = versions
+                case _:  # anything else; unknown, or missing
+                    out_dict["cves"][DEFAULT_CVE_ID]["affected_versions"] = versions
+
+        # Extract link from markdown
+        vendor_link_match = MD_LINK_RE.match(in_row_dict["vendor_link"])
+        if vendor_link_match:
+            out_dict["vendor_links"] = [vendor_link_match.group("link")]
         else:
-            row_dict["affected_versions"] = []
-        row_dict["patched_versions"] = []
-        row_dict["references"] = [row_dict["references"]]
-        row_dict["reporter"] = "cisagov"
+            out_dict["vendor_links"] = []
+
+        out_dict["notes"] = in_row_dict["notes"]
+        out_dict["references"] = [in_row_dict["references"]]
+        out_dict["reporter"] = "cisagov"
         # Parse the existing date, or not
-        if parsed_date := dateparser.parse(row_dict["last_updated"]):
+        if parsed_date := dateparser.parse(in_row_dict["last_updated"]):
             # Check if parsed date has a timezone
             if parsed_date.tzinfo is None:
                 # Add the UTC timezone to the parsed date
-                parsed_date = pytz.utc.localize(parsed_date)
-                row_dict["last_updated"] = parsed_date.isoformat(timespec="seconds")
+                parsed_date.replace(tzinfo=timezone.utc)
+                out_dict["last_updated"] = parsed_date.isoformat(timespec="seconds")
         else:
-            row_dict["last_updated"] = datetime.now(timezone.utc).isoformat(
+            out_dict["last_updated"] = datetime.now(timezone.utc).isoformat(
                 timespec="seconds"
             )
 
-        # Extract link from markdown
-        vendor_link_match = MD_LINK_RE.match(row_dict["vendor_link"])
-        if vendor_link_match:
-            row_dict["vendor_link"] = vendor_link_match.group("link")
-        # Sort record keys
-        row_dict = {key: row_dict[key] for key in ORDERED_FIELD_NAMES}
-        all_rows.append(row_dict)
+        # # Sort record keys
+        # in_row_dict = {key: in_row_dict[key] for key in ORDERED_FIELD_NAMES}
+        out_dict_list.append(out_dict)
 
-    doc = {"version": "1.0", "software": all_rows}
+    doc = {"version": "1.0", "software": out_dict_list}
 
     yaml.dump(
         doc,
