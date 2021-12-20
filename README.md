@@ -6,13 +6,15 @@
 [![Language grade: Python](https://img.shields.io/lgtm/grade/python/g/cisagov/md-table-to-yml.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/cisagov/md-table-to-yml/context:python)
 [![Known Vulnerabilities](https://snyk.io/test/github/cisagov/md-table-to-yml/develop/badge.svg)](https://snyk.io/test/github/cisagov/md-table-to-yml)
 
-This is a generic skeleton project that can be used to quickly get a
-new [cisagov](https://github.com/cisagov) Python library GitHub
-project started.  This skeleton project contains [licensing
-information](LICENSE), as well as
-[pre-commit hooks](https://pre-commit.com) and
-[GitHub Actions](https://github.com/features/actions) configurations
-appropriate for a Python library project.
+This repository contains Python code to:
+
+1. Translate the Markdown table of vulnerable software from
+   [NCSC-NL/log4shell](https://github.com/NCSC-NL/log4shell) into a
+   common YML format.
+1. Merge the YML from the previous step with the YML from
+   [cisagov/log4j-affected-db](https://github.com/cisagov/log4j-affected-db)
+   into one grand YML file.
+1. Generate a Markdown table from the YML output of the previous step.
 
 ## Contributing ##
 
