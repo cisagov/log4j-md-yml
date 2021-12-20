@@ -87,6 +87,7 @@ setup(
     py_modules=[splitext(basename(path))[0] for path in glob("src/*.py")],
     include_package_data=True,
     install_requires=[
+        "chevron",
         "dateparser",
         "docopt",
         "pytz",
@@ -114,6 +115,7 @@ setup(
         "console_scripts": [
             "convert_cisagov = mdyml.convert_cisagov:main",
             "convert_nscs_nl = mdyml.convert_ncsc_nl:main",
+            "md_from_template = md_from_template.md_from_template:main",
             "normalize_yml = yml.normalize_yml:main",
             "yml2md = ymlmd.yml2md:main",
         ]
