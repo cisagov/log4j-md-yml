@@ -97,7 +97,8 @@ def convert() -> None:
         row_dict = dict(zip(EXPECTED_COLUMN_NAMES, row_data))
         row_dict["investigated"] = row_dict["investigated"].lower() in (
             "fix",
-            "not vuln" "vulnerable",
+            "not vuln",
+            "vulnerable",
             "workaround",
         )
         if row_dict["affected_versions"]:
