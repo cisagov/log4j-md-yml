@@ -80,7 +80,7 @@ The subfields in the `cves` entries are as follows:
 
 | `cves` subfield  | Description |
 | ---------------- | ----------- |
-| `cve` | The [CVE ID](https://www.cve.org/) of the particular log4j vulnerability.  Valid values are `cve-2021-4104`, `cve-2021-44228`, `cve-2021-45046`, and `cve-2021-45105`. |
+| `cve` | The [CVE ID](https://www.cve.org/) of the particular log4j vulnerability.  Valid values are [`cve-2021-4104`](https://www.cve.org/CVERecord?id=CVE-2021-4104), [`cve-2021-44228`](https://www.cve.org/CVERecord?id=CVE-2021-44228), [`cve-2021-45046`](https://www.cve.org/CVERecord?id=CVE-2021-45046), and [`cve-2021-45105`](https://www.cve.org/CVERecord?id=CVE-2021-45105). |
 | `affected_versions` | A list of the versions of the product that are vulnerable to the particular CVE. |
 | `fixed_versions` | A list of the versions of the product that are patched and therefore unaffected by the particular CVE. |
 | `investigated` | A Boolean value indicating whether or not the product's vulnerability to the particular CVE has been investigated. |
