@@ -70,14 +70,14 @@ def convert() -> None:
         if skip_next_line:
             skip_next_line = False
             continue
-        if not in_table and line.startswith("|") and "Vendor Link" in line:
+        if not in_table and line.startswith("|"):
             logging.debug("Table start detected")
-            header_names = line.split("|")[1:-1]
-            assert (
-                len(header_names) == EXPECTED_COLUMN_COUNT
-            ), f"Expected {EXPECTED_COLUMN_COUNT} fields in header line, found {len(header_names)}: {header_names}"
-            in_table = True
-            skip_next_line = True
+            # Remove any trailing newline, any beginning or ending pipes, and
+            # split the remaining value on pipes.
+            possible_header_columns = line.rstrip().strip("|").split("|")
+            if len(possible_header_columns) == EXPECTED_COLUMN_COUNT:
+                in_table = True
+                skip_next_line = True
             continue
         if in_table and not line.startswith("|"):
             logging.warning("Line does not start with |, skipping: %s", line)
