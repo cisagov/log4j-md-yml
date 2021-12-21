@@ -47,10 +47,9 @@ EXPECTED_COLUMN_COUNT = len(EXPECTED_COLUMN_NAMES)
 
 
 def convert() -> None:
-    # Parse the markdown at the given URL and convert it to YAML.
-
-    # Get the markdown
-    response = urllib.request.urlopen(RAW_URL)
+    """Parse the markdown at the given URL and convert it to YAML."""
+    # We are using a hardcoded URL so there is no danger of unexpected schemes.
+    response = urllib.request.urlopen(RAW_URL)  # nosec
 
     # Read rows from all tables
     table_rows = []
@@ -62,10 +61,6 @@ def convert() -> None:
             skip_next_line = False
             continue
         if not in_table and line.startswith("|") and "Supplier" in line:
-            header_names = line.split("|")[1:-1]
-            assert (
-                len(header_names) == EXPECTED_COLUMN_COUNT
-            ), f"Expected {EXPECTED_COLUMN_COUNT} fields in header line, found {len(header_names)}: {header_names}"
             in_table = True
             skip_next_line = True
             continue

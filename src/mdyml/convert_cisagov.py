@@ -54,11 +54,11 @@ EXPECTED_COLUMN_COUNT = len(EXPECTED_COLUMN_NAMES)
 
 
 def convert() -> None:
-    # Parse the markdown at the given URL and convert it to YAML.
-
+    """Parse the markdown at the given URL and convert it to YAML."""
     # Get the markdown
     logging.info("Reading markdown at %s", RAW_URL)
-    response = urllib.request.urlopen(RAW_URL)
+    # We are using a hardcoded URL so there is no danger of unexpected schemes.
+    response = urllib.request.urlopen(RAW_URL)  # nosec
 
     # Read rows from all tables
     table_rows = []
