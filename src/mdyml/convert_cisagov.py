@@ -65,10 +65,12 @@ def convert() -> None:
     skip_next_line = False
     for raw_line in response:
         line = html.unescape(raw_line.decode("utf-8"))
+        logging.debug("Read line: %s", line)
         if skip_next_line:
             skip_next_line = False
             continue
-        if not in_table and line.startswith("|") and "Vendor link" in line:
+        if not in_table and line.startswith("|") and "Vendor Link" in line:
+            logging.debug("Table start detected")
             header_names = line.split("|")[1:-1]
             assert (
                 len(header_names) == EXPECTED_COLUMN_COUNT
@@ -80,6 +82,7 @@ def convert() -> None:
             logging.warning("Line does not start with |, skipping: %s", line)
             continue
         if in_table:
+            logging.debug("Appending row")
             table_rows.append(line)
     logging.info("Done reading markdown table %d rows.", len(table_rows))
 
