@@ -13,13 +13,6 @@ import pytest
 # cisagov Libraries
 import mdyml
 
-div_params = [
-    (1, 1, 1),
-    (2, 2, 1),
-    (0, 1, 0),
-    (8, 2, 4),
-]
-
 log_levels = (
     "debug",
     "info",
@@ -97,45 +90,6 @@ def test_log_levels(level):
 def test_bad_log_level():
     """Validate bad log-level argument returns error."""
     with patch.object(sys, "argv", ["bogus", "--log-level=emergency", "1", "1"]):
-        return_code = None
-        try:
-            mdyml.mdyml.main()
-        except SystemExit as sys_exit:
-            return_code = sys_exit.code
-        assert return_code == 1, "main() should exit with error"
-
-
-@pytest.mark.parametrize("dividend, divisor, quotient", div_params)
-def test_division(dividend, divisor, quotient):
-    """Verify division results."""
-    result = mdyml.mdyml_div(dividend, divisor)
-    assert result == quotient, "result should equal quotient"
-
-
-@pytest.mark.slow
-def test_slow_division():
-    """mdyml of using a custom marker.
-
-    This test will only be run if --runslow is passed to pytest.
-    Look in conftest.py to see how this is implemented.
-    """
-    # Standard Python Libraries
-    import time
-
-    result = mdyml.mdyml_div(256, 16)
-    time.sleep(4)
-    assert result == 16, "result should equal be 16"
-
-
-def test_zero_division():
-    """Verify that division by zero throws the correct exception."""
-    with pytest.raises(ZeroDivisionError):
-        mdyml.mdyml_div(1, 0)
-
-
-def test_zero_divisor_argument():
-    """Verify that a divisor of zero is handled as expected."""
-    with patch.object(sys, "argv", ["bogus", "1", "0"]):
         return_code = None
         try:
             mdyml.mdyml.main()
