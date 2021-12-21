@@ -108,10 +108,10 @@ setup(
     # Conveniently allows one to run the CLI tools
     entry_points={
         "console_scripts": [
-            "convert_cisagov = mdyml.convert_cisagov:main",
-            "convert_nscs_nl = mdyml.convert_ncsc_nl:main",
-            "md_from_template = md_from_template.md_from_template:main",
-            "normalize_yml = yml.normalize_yml:main",
+            "convert-cisagov = mdyml.convert_cisagov:main",
+            "convert-nscs-nl = mdyml.convert_ncsc_nl:main",
+            "md-from-template = md_from_template.md_from_template:main",
+            "normalize-yml = yml.normalize_yml:main",
             "yml2md = ymlmd.yml2md:main",
         ]
     },
