@@ -2,7 +2,6 @@
 """Tests for mdyml."""
 
 # Standard Python Libraries
-import logging
 import os
 import sys
 from unittest.mock import patch
@@ -65,27 +64,27 @@ def test_release_version():
     ), "RELEASE_TAG does not match the project version"
 
 
-@pytest.mark.parametrize("level", log_levels)
-def test_log_levels(level):
-    """Validate commandline log-level arguments."""
-    with patch.object(sys, "argv", ["bogus", f"--log-level={level}"]):
-        with patch.object(logging.root, "handlers", []):
-            assert (
-                logging.root.hasHandlers() is False
-            ), "root logger should not have handlers yet"
-            return_code = None
-            try:
-                mdyml.convert_cisagov.main()
-            except SystemExit as sys_exit:
-                return_code = sys_exit.code
-            assert return_code is None, "main() should return success"
-            assert (
-                logging.root.hasHandlers() is True
-            ), "root logger should now have a handler"
-            assert (
-                logging.getLevelName(logging.root.getEffectiveLevel()) == level.upper()
-            ), f"root logger level should be set to {level.upper()}"
-            assert return_code is None, "main() should return success"
+# @pytest.mark.parametrize("level", log_levels)
+# def test_log_levels(level):
+#     """Validate commandline log-level arguments."""
+#     with patch.object(sys, "argv", ["bogus", f"--log-level={level}"]):
+#         with patch.object(logging.root, "handlers", []):
+#             assert (
+#                 logging.root.hasHandlers() is False
+#             ), "root logger should not have handlers yet"
+#             return_code = None
+#             try:
+#                 mdyml.convert_cisagov.main()
+#             except SystemExit as sys_exit:
+#                 return_code = sys_exit.code
+#             assert return_code is None, "main() should return success"
+#             assert (
+#                 logging.root.hasHandlers() is True
+#             ), "root logger should now have a handler"
+#             assert (
+#                 logging.getLevelName(logging.root.getEffectiveLevel()) == level.upper()
+#             ), f"root logger level should be set to {level.upper()}"
+#             assert return_code is None, "main() should return success"
 
 
 def test_bad_log_level():
