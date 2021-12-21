@@ -12,6 +12,7 @@ import pytest
 
 # cisagov Libraries
 import mdyml
+import mdyml.convert_cisagov
 
 log_levels = (
     "debug",
@@ -30,7 +31,7 @@ def test_stdout_version(capsys):
     """Verify that version string sent to stdout agrees with the module version."""
     with pytest.raises(SystemExit):
         with patch.object(sys, "argv", ["bogus", "--version"]):
-            mdyml.mdyml.main()
+            mdyml.convert_cisagov.main()
     captured = capsys.readouterr()
     assert (
         captured.out == f"{PROJECT_VERSION}\n"
@@ -67,14 +68,14 @@ def test_release_version():
 @pytest.mark.parametrize("level", log_levels)
 def test_log_levels(level):
     """Validate commandline log-level arguments."""
-    with patch.object(sys, "argv", ["bogus", f"--log-level={level}", "1", "1"]):
+    with patch.object(sys, "argv", ["bogus", f"--log-level={level}"]):
         with patch.object(logging.root, "handlers", []):
             assert (
                 logging.root.hasHandlers() is False
             ), "root logger should not have handlers yet"
             return_code = None
             try:
-                mdyml.mdyml.main()
+                mdyml.convert_cisagov.main()
             except SystemExit as sys_exit:
                 return_code = sys_exit.code
             assert return_code is None, "main() should return success"
@@ -89,10 +90,10 @@ def test_log_levels(level):
 
 def test_bad_log_level():
     """Validate bad log-level argument returns error."""
-    with patch.object(sys, "argv", ["bogus", "--log-level=emergency", "1", "1"]):
+    with patch.object(sys, "argv", ["bogus", "--log-level=emergency"]):
         return_code = None
         try:
-            mdyml.mdyml.main()
+            mdyml.convert_cisagov.main()
         except SystemExit as sys_exit:
             return_code = sys_exit.code
         assert return_code == 1, "main() should exit with error"

@@ -32,7 +32,8 @@ import docopt
 from schema import And, Schema, SchemaError, Use
 import yaml
 
-from . import DEFAULT_CVE_ID, MD_LINK_RE, ORDERED_CVE_IDS, _version
+from . import DEFAULT_CVE_ID, MD_LINK_RE, ORDERED_CVE_IDS
+from ._version import __version__
 
 RAW_URL = (
     "https://raw.githubusercontent.com/cisagov/log4j-affected-db/develop/README.md"
@@ -175,9 +176,9 @@ def convert() -> None:
     )
 
 
-def main() -> int:
+def main() -> None:
     """Set up logging and call the mdyml function."""
-    args: dict[str, str] = docopt.docopt(__doc__, version=_version)
+    args: dict[str, str] = docopt.docopt(__doc__, version=__version__)
     # Validate and convert arguments as needed
     schema: Schema = Schema(
         {
@@ -211,4 +212,3 @@ def main() -> int:
 
     # Stop logging and clean up
     logging.shutdown()
-    return 0
