@@ -1,7 +1,7 @@
 """md_from_template Markdown generation tool.
 
-Output Markdown from a Markdown template file and a file containing JSON data
-to be applied to the template.
+Output Markdown based on a Markdown template file and a file containing a
+Markdown table with the software from cisagov/log4j-affected-db.
 
 EXIT STATUS
     This utility exits with one of the following values:
@@ -9,7 +9,7 @@ EXIT STATUS
     >0  An error occurred.
 
 Usage:
-  md_from_template [--log-level=LEVEL] <md_template> <template_data_json>
+  md_from_template [--log-level=LEVEL] <md_template> <software_md_table_file>
   md_from_template (-h | --help)
 
 Options:
@@ -20,7 +20,6 @@ Options:
 """
 
 # Standard Python Libraries
-import json
 import logging
 import sys
 from typing import Any
@@ -42,13 +41,13 @@ def load(filename: str) -> str:
     return ans
 
 
-def load_json(filename: str) -> str:
-    """Return the contents of a JSON file."""
-    ans = None
-    with open(filename, "r") as f:
-        ans = json.loads(f.read())
+def build_template_data(software_markdown_table_file: str) -> dict:
+    """Return a dict containing data needed to render the Markdown template."""
+    # The only key in the template so far is "software_markdown_table".
+    # We read the Markdown for this value from the supplied file.
+    template_data = {"software_markdown_table": load(software_markdown_table_file)}
 
-    return ans
+    return template_data
 
 
 def generate_markdown_from_template(template: str, data: dict) -> None:
@@ -88,10 +87,13 @@ def main() -> int:
         format="%(asctime)-15s %(levelname)s %(message)s", level=log_level.upper()
     )
 
+    # Build template data dictionary
+    template_data = build_template_data(validated_args["<software_md_table_file>"])
+
     # Render Markdown from template and data
     generate_markdown_from_template(
         load(validated_args["<md_template>"]),
-        load_json(validated_args["<template_data_json>"]),
+        template_data,
     )
 
     # Stop logging and clean up
