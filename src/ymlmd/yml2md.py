@@ -29,7 +29,7 @@ import docopt
 from schema import And, Schema, SchemaError, Use
 import yaml
 
-from . import _version
+from ._version import __version__
 
 Software = list[dict[str, Any]]
 
@@ -99,7 +99,7 @@ def generate_markdown(software: Software) -> None:
 
 def main() -> int:
     """Set up logging and call the data loading, data conversion, and Markdown generation functions."""
-    args: dict[str, str] = docopt.docopt(__doc__, version=_version)
+    args: dict[str, str] = docopt.docopt(__doc__, version=__version__)
     # Validate and convert arguments as needed
     schema: Schema = Schema(
         {

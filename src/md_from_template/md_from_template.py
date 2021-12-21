@@ -29,7 +29,7 @@ import chevron
 import docopt
 from schema import And, Schema, SchemaError, Use
 
-from . import _version
+from ._version import __version__
 
 
 def load(filename: str) -> str:
@@ -57,7 +57,7 @@ def generate_markdown_from_template(template: str, data: dict) -> None:
 
 def main() -> int:
     """Set up logging and call the Markdown generation function."""
-    args: dict[str, str] = docopt.docopt(__doc__, version=_version)
+    args: dict[str, str] = docopt.docopt(__doc__, version=__version__)
     # Validate and convert arguments as needed
     schema: Schema = Schema(
         {
