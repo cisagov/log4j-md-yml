@@ -8,8 +8,8 @@ EXIT STATUS
     >0  An error occurred.
 
 Usage:
-  normalize_yml [--log-level=LEVEL] <yml_file>...
-  normalize_yml (-h | --help)
+  normalize-yml [--log-level=LEVEL] <yml_file>...
+  normalize-yml (-h | --help)
 
 Options:
   -h --help              Show this message.

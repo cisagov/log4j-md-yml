@@ -8,8 +8,8 @@ EXIT STATUS
     >0  An error occurred.
 
 Usage:
-  convert_cisagov [--log-level=LEVEL]
-  convert_cisagov (-h | --help)
+  convert-cisagov [--log-level=LEVEL]
+  convert-cisagov (-h | --help)
 
 Options:
   -h --help              Show this message.

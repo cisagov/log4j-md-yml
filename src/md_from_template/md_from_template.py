@@ -9,8 +9,8 @@ EXIT STATUS
     >0  An error occurred.
 
 Usage:
-  md_from_template [--log-level=LEVEL] <md_template> <software_md_table_file>
-  md_from_template (-h | --help)
+  md-from-template [--log-level=LEVEL] <md_template> <software_md_table_file>
+  md-from-template (-h | --help)
 
 Options:
   -h --help              Show this message.

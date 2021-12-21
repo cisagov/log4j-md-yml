@@ -8,8 +8,8 @@ EXIT STATUS
     >0  An error occurred.
 
 Usage:
-  convert_ncsc_nl [--log-level=LEVEL]
-  convert_ncsc_nl (-h | --help)
+  convert-ncsc-nl [--log-level=LEVEL]
+  convert-ncsc-nl (-h | --help)
 
 Options:
   -h --help              Show this message.
