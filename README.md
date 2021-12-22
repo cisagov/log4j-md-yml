@@ -15,6 +15,8 @@ This repository contains Python code to:
    [cisagov/log4j-affected-db](https://github.com/cisagov/log4j-affected-db)
    into one grand YML file.
 1. Generate a Markdown table from the YML output of the previous step.
+1. Generate Markdown based on a Markdown template file and a file containing
+   a Markdown table such as the output of the previous step.
 
 ## Common YML format ##
 
