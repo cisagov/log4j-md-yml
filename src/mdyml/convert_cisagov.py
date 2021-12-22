@@ -35,9 +35,7 @@ import yaml
 from . import DEFAULT_CVE_ID, MD_LINK_RE, ORDERED_CVE_IDS
 from ._version import __version__
 
-RAW_URL = (
-    "https://raw.githubusercontent.com/cisagov/log4j-affected-db/develop/README.md"
-)
+RAW_URL = "https://raw.githubusercontent.com/cisagov/log4j-affected-db/develop/SOFTWARE-LIST.md"
 
 EXPECTED_COLUMN_NAMES = [
     "vendor",
