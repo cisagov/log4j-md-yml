@@ -87,6 +87,7 @@ setup(
         "dateparser",
         "docopt",
         "pyyaml",
+        "ruamel.yaml",
         "schema",
         "setuptools >= 24.2.0",
     ],

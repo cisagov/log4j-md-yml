@@ -29,8 +29,8 @@ import urllib.request
 # Third-Party Libraries
 import dateparser
 import docopt
+import ruamel.yaml
 from schema import And, Schema, SchemaError, Use
-import yaml
 
 from . import DEFAULT_CVE_ID, MD_LINK_RE, ORDERED_CVE_IDS
 from ._version import __version__
@@ -164,14 +164,13 @@ def convert() -> None:
 
     doc = {"version": "1.0", "software": out_dict_list}
 
-    yaml.dump(
-        doc,
-        sys.stdout,
-        explicit_start=True,
-        explicit_end=True,
-        sort_keys=False,
-        allow_unicode=True,
-    )
+    yaml = ruamel.yaml.YAML()
+    yaml.indent(mapping=2, offset=2, sequence=4)
+    yaml.explicit_start = True
+    yaml.explicit_end = True
+    yaml.sort_base_mapping_type_on_output = False
+    yaml.allow_unicode = True
+    yaml.dump(doc, sys.stdout)
 
 
 def main() -> None:
