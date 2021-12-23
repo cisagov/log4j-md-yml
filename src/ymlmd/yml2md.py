@@ -74,7 +74,7 @@ def generate_markdown(software: Software) -> None:
         "| Vendor | Product | Affected Versions | Patched Versions | Status | Vendor Links | Notes | References | Reporter | Last Updated |"
     )
     print(
-        "| ------ | ------- | ----------------- | ---------------- | ------ | ----------- | ----- | ---------- | -------- | ------------ |"
+        "| ------ | ------- | ----------------- | ---------------- | ------ | ------------ | ----- | ---------- | -------- | ------------ |"
     )
     # Print table converting lists to comma separated strings
     for i, s in enumerate(software, start=1):
