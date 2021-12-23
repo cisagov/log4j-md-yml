@@ -29,6 +29,9 @@ import docopt
 from schema import And, Schema, SchemaError, Use
 import yaml
 
+# cisagov Libraries
+from mdyml import DEFAULT_CVE_ID
+
 from ._version import __version__
 
 Software = list[dict[str, Any]]
@@ -46,16 +49,18 @@ def load(filename: str) -> Software:
 def calculate_status(software: Software) -> Software:
     """Calculate status field for each software entry."""
     for s in software:
-        if len(s["affected_versions"]) == 0:
-            if len(s["patched_versions"]) == 0:
-                if s["investigated"]:
+        # We are only worrying about the main (default) CVE for now.
+        default_cve = s["cves"][DEFAULT_CVE_ID]
+        if len(default_cve["affected_versions"]) == 0:
+            if len(default_cve["fixed_versions"]) == 0:
+                if default_cve["investigated"]:
                     s["status"] = "Not Affected"
                 else:
                     s["status"] = "Unknown"
-            else:  # patched_versions is not empty
+            else:  # fixed_versions is not empty
                 s["status"] = "Fixed"
         else:  # affected versions is not empty
-            if len(s["patched_versions"]) == 0:
+            if len(default_cve["fixed_versions"]) == 0:
                 s["status"] = "Affected"
             else:
                 s["status"] = "Fixed"
@@ -73,15 +78,16 @@ def generate_markdown(software: Software) -> None:
     )
     # Print table converting lists to comma separated strings
     for s in software:
+        default_cve = s["cves"][DEFAULT_CVE_ID]
         print(
             "| {vendor} | {product} | {affected_versions} | {patched_versions} | {status} | {vendor_link} | {notes} | {references} | {reporter} | {last_updated} |".format(
                 vendor=s["vendor"],
                 product=s["product"],
                 affected_versions=",".join(
-                    [x for x in s["affected_versions"] if len(x) != 0]
+                    [x for x in default_cve["affected_versions"] if len(x) != 0]
                 ),
                 patched_versions=",".join(
-                    [x for x in s["patched_versions"] if len(x) != 0]
+                    [x for x in default_cve["fixed_versions"] if len(x) != 0]
                 ),
                 status=s["status"],
                 # convert vendor link to markdown link if it starts with http
