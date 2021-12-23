@@ -77,34 +77,39 @@ def generate_markdown(software: Software) -> None:
         "| ------ | ------- | ----------------- | ---------------- | ------ | ----------- | ----- | ---------- | -------- | ------------ |"
     )
     # Print table converting lists to comma separated strings
-    for s in software:
+    for i, s in enumerate(software, start=1):
         default_cve = s["cves"][DEFAULT_CVE_ID]
-        print(
-            "| {vendor} | {product} | {affected_versions} | {patched_versions} | {status} | {vendor_links} | {notes} | {references} | {reporter} | {last_updated} |".format(
-                vendor=s["vendor"],
-                product=s["product"],
-                affected_versions=",".join(
-                    [x for x in default_cve["affected_versions"] if len(x) != 0]
-                ),
-                patched_versions=",".join(
-                    [x for x in default_cve["fixed_versions"] if len(x) != 0]
-                ),
-                status=s["status"],
-                # convert vendor links to markdown links if they start
-                # with http
-                vendor_links=", ".join(
-                    [
-                        f"[link]({link})" if link.startswith("http") else link
-                        for link in s["vendor_links"]
-                    ]
-                ),
-                notes=s["notes"],
-                references="; ".join([x for x in s["references"] if len(x) != 0]),
-                reporter=s["reporter"],
-                # create a datetime from string and print date portion
-                last_updated=dateparser.parse(s["last_updated"]).strftime("%Y-%m-%d"),
+        try:
+            print(
+                "| {vendor} | {product} | {affected_versions} | {patched_versions} | {status} | {vendor_links} | {notes} | {references} | {reporter} | {last_updated} |".format(
+                    vendor=s["vendor"],
+                    product=s["product"],
+                    affected_versions=",".join(
+                        [x for x in default_cve["affected_versions"] if len(x) != 0]
+                    ),
+                    patched_versions=",".join(
+                        [x for x in default_cve["fixed_versions"] if len(x) != 0]
+                    ),
+                    status=s["status"],
+                    # convert vendor links to markdown links if they start
+                    # with http
+                    vendor_links=", ".join(
+                        [
+                            f"[link]({link})" if link.startswith("http") else link
+                            for link in s["vendor_links"]
+                        ]
+                    ),
+                    notes=s["notes"],
+                    references="; ".join([x for x in s["references"] if len(x) != 0]),
+                    reporter=s["reporter"],
+                    # create a datetime from string and print date portion
+                    last_updated=dateparser.parse(s["last_updated"]).strftime(
+                        "%Y-%m-%d"
+                    ),
+                )
             )
-        )
+        except KeyError as err:
+            print(f"{i}: {err} - {s}", file=sys.stderr)
 
 
 def main() -> int:
