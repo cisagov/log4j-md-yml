@@ -69,13 +69,23 @@ def calculate_status(software: Software) -> Software:
 
 def generate_markdown(software: Software) -> None:
     """Generate markdown manually."""
-    # Print header
-    print(
-        "| Vendor | Product | Affected Versions | Patched Versions | Status | Vendor Links | Notes | References | Reporter | Last Updated |"
-    )
-    print(
-        "| ------ | ------- | ----------------- | ---------------- | ------ | ------------ | ----- | ---------- | -------- | ------------ |"
-    )
+    header_fields = [
+        "Vendor",
+        "Product",
+        "Affected Versions",
+        "Patched Versions",
+        "Status",
+        "Vendor Links",
+        "Notes",
+        "References",
+        "Reporter",
+        "Last Updated",
+    ]
+
+    # Print header and delimiter rows
+    for row_contents in [header_fields, ["-" * len(field) for field in header_fields]]:
+        print(f'| {" | ".join(row_contents)} |')
+
     # Print table converting lists to comma separated strings
     for i, s in enumerate(software, start=1):
         default_cve = s["cves"][DEFAULT_CVE_ID]
