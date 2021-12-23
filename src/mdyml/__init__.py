@@ -10,7 +10,7 @@ from ._version import __version__  # noqa: F401
 
 DEFAULT_CVE_ID = "cve-2021-44228"
 
-MD_LINK_RE = re.compile(r"\[(?P<text>.*?)\]\((?P<link>.*?)\)")
+MD_LINK_RE = re.compile(r"\[(?P<text>.*?)\]\((?P<link>\S*)\)")
 
 ORDERED_CVE_IDS = [
     "cve-2021-4104",
