@@ -32,33 +32,16 @@ software:
       - affected_versions:
           - 1.0
           - 1.1
-        cve: cve-2021-4104
+        cve: cve-2021-44228
         fixed_versions:
           - 1.2
         investigated: true
         unaffected_versions: []
-      - affected_versions: []
-        cve: cve-2021-44228
-        fixed_versions: []
-        investigated: true
-        unaffected_versions: []
-      - affected_versions: []
-        cve: cve-2021-45046
-        fixed_versions: []
-        investigated: true
-        unaffected_versions: []
-      - affected_versions: []
-        cve: cve-2021-45105
-        fixed_versions: []
-        investigated: true
-        unaffected_versions: []
-    last_updated: '2021-12-17T16:21:12+00:00'
     notes: Blah blah blah
     product: ProductA
     references:
       - https://www.reddit.com/r/Vendor1/comments/abcdef/log4j
     reporter: cisagov
-    status: Fix
     vendor: Vendor1
     vendor_links:
       - https://vendor1.com/discussion/comment/622612/#Comment_622612
@@ -71,12 +54,10 @@ The fields and their descriptions are as follows:
 | Field  | Description |
 | ------ | ----------- |
 | `cves` | A list of dictionaries containing a CVE ID together with vulnerability information about the product specific to that CVE. |
-| `last_updated` | The [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) timestamp denoting when the product information was last updated. |
 | `notes` | A free-form text field for additional notes. |
 | `product` | The name of the software product. |
 | `references` | A list of links to non-vendor sources concerning the software product and the log4j vulnerabilities. |
 | `reporter` | The entity reporting information about the software product. |
-| `status` | The current status of the software product with respect to the log4j vulnerabilities. |
 | `vendor` | The name of the software vendor. |
 | `vendor_links` | A list of links to the vendor's website concerning the software product and the log4j vulnerabilities. |
 
@@ -84,7 +65,7 @@ The subfields in the `cves` entries are as follows:
 
 | `cves` subfield  | Description |
 | ---------------- | ----------- |
-| `cve` | The [CVE ID](https://www.cve.org/) of the particular log4j vulnerability.  Valid values are [`cve-2021-4104`](https://www.cve.org/CVERecord?id=CVE-2021-4104), [`cve-2021-44228`](https://www.cve.org/CVERecord?id=CVE-2021-44228), [`cve-2021-45046`](https://www.cve.org/CVERecord?id=CVE-2021-45046), and [`cve-2021-45105`](https://www.cve.org/CVERecord?id=CVE-2021-45105). |
+| `cve` | The [CVE ID](https://www.cve.org/) of the particular log4j vulnerability.  The only valid value is [`cve-2021-44228`](https://www.cve.org/CVERecord?id=CVE-2021-44228). |
 | `affected_versions` | A list of the versions of the product that are vulnerable to the particular CVE. |
 | `fixed_versions` | A list of the versions of the product that are patched and therefore unaffected by the particular CVE. |
 | `investigated` | A Boolean value indicating whether or not the product's vulnerability to the particular CVE has been investigated. |
