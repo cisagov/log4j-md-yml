@@ -71,7 +71,7 @@ def generate_markdown(software: Software) -> None:
     """Generate markdown manually."""
     # Print header
     print(
-        "| Vendor | Product | Affected Versions | Patched Versions | Status | Vendor Link | Notes | References | Reporter | Last Updated |"
+        "| Vendor | Product | Affected Versions | Patched Versions | Status | Vendor Links | Notes | References | Reporter | Last Updated |"
     )
     print(
         "| ------ | ------- | ----------------- | ---------------- | ------ | ----------- | ----- | ---------- | -------- | ------------ |"
@@ -80,7 +80,7 @@ def generate_markdown(software: Software) -> None:
     for s in software:
         default_cve = s["cves"][DEFAULT_CVE_ID]
         print(
-            "| {vendor} | {product} | {affected_versions} | {patched_versions} | {status} | {vendor_link} | {notes} | {references} | {reporter} | {last_updated} |".format(
+            "| {vendor} | {product} | {affected_versions} | {patched_versions} | {status} | {vendor_links} | {notes} | {references} | {reporter} | {last_updated} |".format(
                 vendor=s["vendor"],
                 product=s["product"],
                 affected_versions=",".join(
@@ -90,10 +90,14 @@ def generate_markdown(software: Software) -> None:
                     [x for x in default_cve["fixed_versions"] if len(x) != 0]
                 ),
                 status=s["status"],
-                # convert vendor link to markdown link if it starts with http
-                vendor_link=f'[link]({s["vendor_link"]})'
-                if s["vendor_link"].startswith("http")
-                else s["vendor_link"],
+                # convert vendor links to markdown links if they start
+                # with http
+                vendor_links=", ".join(
+                    [
+                        f"[link]({link})" if link.startswith("http") else link
+                        for link in s["vendor_links"]
+                    ]
+                ),
                 notes=s["notes"],
                 references="; ".join([x for x in s["references"] if len(x) != 0]),
                 reporter=s["reporter"],
