@@ -36,7 +36,7 @@ def load(filename: str) -> str:
     """Return the contents of a file."""
     ans = None
     with open(filename, "r") as f:
-        ans = f.read()
+        ans = f.read().rstrip()
 
     return ans
 
