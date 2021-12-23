@@ -152,7 +152,7 @@ def convert() -> None:
             if parsed_date.tzinfo is None:
                 # Add the UTC timezone to the parsed date
                 parsed_date.replace(tzinfo=timezone.utc)
-                out_dict["last_updated"] = parsed_date.isoformat(timespec="seconds")
+            out_dict["last_updated"] = parsed_date.isoformat(timespec="seconds")
         else:
             out_dict["last_updated"] = datetime.now(timezone.utc).isoformat(
                 timespec="seconds"
