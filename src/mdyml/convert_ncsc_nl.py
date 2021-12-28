@@ -1,4 +1,4 @@
-"""convert_ncsc_nl markdown conversion tool.
+"""convert_ncsc_nl Markdown conversion tool.
 
 Fetches the contents of the NCSC NL GitHub repository and converts it to YAML.
 
@@ -47,7 +47,7 @@ EXPECTED_COLUMN_COUNT = len(EXPECTED_COLUMN_NAMES)
 
 
 def convert() -> None:
-    """Parse the markdown at the given URL and convert it to YAML."""
+    """Parse the Markdown at the given URL and convert it to YAML."""
     # We are using a hardcoded URL so there is no danger of unexpected schemes.
     response = urllib.request.urlopen(RAW_URL)  # nosec
 
@@ -106,7 +106,7 @@ def convert() -> None:
         row_dict["last_updated"] = datetime.now(timezone.utc).isoformat(
             timespec="seconds"
         )
-        # Extract link from markdown
+        # Extract link from Markdown
         vendor_link_match = MD_LINK_RE.match(row_dict["vendor_link"])
         if vendor_link_match:
             row_dict["vendor_link"] = vendor_link_match.group("link")

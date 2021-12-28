@@ -1,4 +1,4 @@
-"""convert_cisagov markdown conversion tool.
+"""convert_cisagov Markdown conversion tool.
 
 Fetches the contents of the cisagov GitHub repository and converts it to YAML.
 
@@ -52,9 +52,9 @@ EXPECTED_COLUMN_COUNT = len(EXPECTED_COLUMN_NAMES)
 
 
 def convert() -> None:
-    """Parse the markdown at the given URL and convert it to YAML."""
-    # Get the markdown
-    logging.info("Reading markdown at %s", RAW_URL)
+    """Parse the Markdown at the given URL and convert it to YAML."""
+    # Get the Markdown
+    logging.info("Reading Markdown at %s", RAW_URL)
     # We are using a hardcoded URL so there is no danger of unexpected schemes.
     response = urllib.request.urlopen(RAW_URL)  # nosec
 
@@ -136,7 +136,7 @@ def convert() -> None:
                 case _:  # anything else; unknown, or missing
                     out_dict["cves"][DEFAULT_CVE_ID]["affected_versions"] = versions
 
-        # Extract link from markdown
+        # Extract link from Markdown
         vendor_link_match = MD_LINK_RE.match(in_row_dict["vendor_link"])
         if vendor_link_match:
             out_dict["vendor_links"] = [vendor_link_match.group("link")]
