@@ -1,10 +1,10 @@
-# md-table-to-yml #
+# log4j-md-yml #
 
-[![GitHub Build Status](https://github.com/cisagov/md-table-to-yml/workflows/build/badge.svg)](https://github.com/cisagov/md-table-to-yml/actions)
-[![Coverage Status](https://coveralls.io/repos/github/cisagov/md-table-to-yml/badge.svg?branch=develop)](https://coveralls.io/github/cisagov/md-table-to-yml?branch=develop)
-[![Total alerts](https://img.shields.io/lgtm/alerts/g/cisagov/md-table-to-yml.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/cisagov/md-table-to-yml/alerts/)
-[![Language grade: Python](https://img.shields.io/lgtm/grade/python/g/cisagov/md-table-to-yml.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/cisagov/md-table-to-yml/context:python)
-[![Known Vulnerabilities](https://snyk.io/test/github/cisagov/md-table-to-yml/develop/badge.svg)](https://snyk.io/test/github/cisagov/md-table-to-yml)
+[![GitHub Build Status](https://github.com/cisagov/log4j-md-yml/workflows/build/badge.svg)](https://github.com/cisagov/log4j-md-yml/actions)
+[![Coverage Status](https://coveralls.io/repos/github/cisagov/log4j-md-yml/badge.svg?branch=develop)](https://coveralls.io/github/cisagov/log4j-md-yml?branch=develop)
+[![Total alerts](https://img.shields.io/lgtm/alerts/g/cisagov/log4j-md-yml.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/cisagov/log4j-md-yml/alerts/)
+[![Language grade: Python](https://img.shields.io/lgtm/grade/python/g/cisagov/log4j-md-yml.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/cisagov/log4j-md-yml/context:python)
+[![Known Vulnerabilities](https://snyk.io/test/github/cisagov/log4j-md-yml/develop/badge.svg)](https://snyk.io/test/github/cisagov/log4j-md-yml)
 
 This repository contains Python code to:
 

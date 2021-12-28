@@ -42,7 +42,7 @@ def get_version(version_file):
 
 
 setup(
-    name="mdyml",
+    name="log4j-md-yml",
     # Versions should comply with PEP440
     version=get_version("src/mdyml/_version.py"),
     description="mdyml Python library",
@@ -53,8 +53,8 @@ setup(
     # Additional URLs for this project per
     # https://packaging.python.org/guides/distributing-packages-using-setuptools/#project-urls
     project_urls={
-        "Source": "https://github.com/cisagov/md-table-to-yml",
-        "Tracker": "https://github.com/cisagov/md-table-to-yml/issues",
+        "Source": "https://github.com/cisagov/log4j-md-yml",
+        "Tracker": "https://github.com/cisagov/log4j-md-yml/issues",
     },
     # Author details
     author="Cybersecurity and Infrastructure Security Agency",
