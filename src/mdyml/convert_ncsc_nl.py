@@ -1,6 +1,7 @@
 """convert_ncsc_nl Markdown conversion tool.
 
-Fetches the contents of the NCSC NL GitHub repository and converts it to YAML.
+Fetches the contents of the NCSC-NL/log4shell GitHub repository
+and converts it to YAML.
 
 EXIT STATUS
     This utility exits with one of the following values:
