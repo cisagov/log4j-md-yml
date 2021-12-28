@@ -68,7 +68,7 @@ def calculate_status(software: Software) -> Software:
 
 
 def generate_markdown(software: Software) -> None:
-    """Generate markdown manually."""
+    """Generate Markdown manually."""
     header_fields = [
         "Vendor",
         "Product",
@@ -101,7 +101,7 @@ def generate_markdown(software: Software) -> None:
                         [x for x in default_cve["fixed_versions"] if len(x) != 0]
                     ),
                     status=s["status"],
-                    # convert vendor links to markdown links if they start
+                    # convert vendor links to Markdown links if they start
                     # with http
                     vendor_links=", ".join(
                         [
