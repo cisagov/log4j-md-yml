@@ -1,5 +1,5 @@
 """
-This is the setup module for the mdyml project.
+This is the setup module for the log4j-md-yml project.
 
 Based on:
 
@@ -45,7 +45,7 @@ setup(
     name="log4j-md-yml",
     # Versions should comply with PEP440
     version=get_version("src/mdyml/_version.py"),
-    description="mdyml Python library",
+    description="log4j-md-yml Python library",
     long_description=readme(),
     long_description_content_type="text/markdown",
     # Landing page for CISA's cybersecurity mission
