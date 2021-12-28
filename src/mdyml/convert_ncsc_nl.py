@@ -128,7 +128,7 @@ def convert() -> None:
 
 
 def main() -> int:
-    """Set up logging and call the mdyml function."""
+    """Set up logging and call the convert function."""
     args: dict[str, str] = docopt.docopt(__doc__, version=_version)
     # Validate and convert arguments as needed
     schema: Schema = Schema(
