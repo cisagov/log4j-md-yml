@@ -32,7 +32,7 @@ import docopt
 from schema import And, Schema, SchemaError, Use
 import yaml
 
-from . import MD_LINK_RE, ORDERED_FIELD_NAMES, _version
+from . import MD_LINK_RE, ORDERED_FIELD_NAMES, __version__
 
 RAW_URL = "https://raw.githubusercontent.com/NCSC-NL/log4shell/main/software/README.md"
 
@@ -129,7 +129,7 @@ def convert() -> None:
 
 def main() -> int:
     """Set up logging and call the convert function."""
-    args: dict[str, str] = docopt.docopt(__doc__, version=_version)
+    args: dict[str, str] = docopt.docopt(__doc__, version=__version__)
     # Validate and convert arguments as needed
     schema: Schema = Schema(
         {
