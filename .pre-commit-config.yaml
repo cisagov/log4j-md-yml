@@ -102,6 +102,9 @@ repos:
       - id: flake8
         additional_dependencies:
           - flake8-docstrings
+  # TODO: Revert commit 51752ee and remove this comment once
+  # PyCQA/isort#1875 (the PR corresponding to the branch below) is
+  # merged.  See #2 for more details.
   - repo: https://github.com/m-kuhn/isort
     rev: patch-1
     hooks:
