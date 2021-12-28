@@ -29,7 +29,7 @@ import chevron
 import docopt
 from schema import And, Schema, SchemaError, Use
 
-from ._version import __version__
+from . import __version__
 
 
 def load(filename: str) -> str:

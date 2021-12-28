@@ -32,7 +32,7 @@ import yaml
 # cisagov Libraries
 from mdyml import DEFAULT_CVE_ID
 
-from ._version import __version__
+from . import __version__
 
 Software = list[dict[str, Any]]
 

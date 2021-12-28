@@ -28,7 +28,7 @@ import docopt
 from schema import And, Schema, SchemaError, Use
 import yaml
 
-from ._version import __version__
+from . import __version__
 
 Software = list[dict[str, Any]]
 

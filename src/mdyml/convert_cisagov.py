@@ -33,8 +33,7 @@ import docopt
 import ruamel.yaml
 from schema import And, Schema, SchemaError, Use
 
-from . import DEFAULT_CVE_ID, MD_LINK_RE, ORDERED_CVE_IDS
-from ._version import __version__
+from . import DEFAULT_CVE_ID, MD_LINK_RE, ORDERED_CVE_IDS, __version__
 
 RAW_URL = "https://raw.githubusercontent.com/cisagov/log4j-affected-db/develop/SOFTWARE-LIST.md"
 
