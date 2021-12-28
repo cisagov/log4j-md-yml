@@ -159,8 +159,6 @@ def convert() -> None:
                 timespec="seconds"
             )
 
-        # # Sort record keys
-        # in_row_dict = {key: in_row_dict[key] for key in ORDERED_FIELD_NAMES}
         out_dict_list.append(out_dict)
 
     doc = {"version": "1.0", "software": out_dict_list}
