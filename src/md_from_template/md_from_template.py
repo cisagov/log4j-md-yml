@@ -55,7 +55,7 @@ def generate_markdown_from_template(template: str, data: dict) -> None:
     print(chevron.render(template, data))
 
 
-def main() -> int:
+def main() -> None:
     """Set up logging and call the Markdown generation function."""
     args: dict[str, str] = docopt.docopt(__doc__, version=__version__)
     # Validate and convert arguments as needed
@@ -98,4 +98,3 @@ def main() -> int:
 
     # Stop logging and clean up
     logging.shutdown()
-    return 0

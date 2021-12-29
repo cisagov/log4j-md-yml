@@ -54,7 +54,7 @@ def sort(software: Software) -> Software:
     return software
 
 
-def main() -> int:
+def main() -> None:
     """Set up logging and call the munging, normalizing, and sorting functions."""
     args: dict[str, str] = docopt.docopt(__doc__, version=__version__)
     # Validate and convert arguments as needed
@@ -91,4 +91,3 @@ def main() -> int:
 
     # Stop logging and clean up
     logging.shutdown()
-    return 0
