@@ -45,6 +45,7 @@ software:
     vendor: Vendor1
     vendor_links:
       - https://vendor1.com/discussion/comment/622612/#Comment_622612
+    last_updated: "2021-12-09"
   ⋮
 ...
 ```
@@ -54,6 +55,7 @@ The fields and their descriptions are as follows:
 | Field  | Description |
 | ------ | ----------- |
 | `cves` | A list of dictionaries containing a CVE ID together with vulnerability information about the product specific to that CVE. |
+| `last_updated` | The date of the last update for this product in ISO 8601 timestamp format. |
 | `notes` | A free-form text field for additional notes. |
 | `product` | The name of the software product. |
 | `references` | A list of links to non-vendor sources concerning the software product and the log4j vulnerabilities. |
