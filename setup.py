@@ -78,7 +78,7 @@ setup(
     ],
     python_requires=">=3.10",
     # What does your project relate to?
-    keywords="log4j",
+    keywords="log4j markdown yaml",
     packages=find_packages(where="src"),
     package_dir={"": "src"},
     py_modules=[splitext(basename(path))[0] for path in glob("src/*.py")],
