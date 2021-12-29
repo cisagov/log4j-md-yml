@@ -86,7 +86,7 @@ def generate_markdown(software: Software) -> None:
     for row_contents in [header_fields, ["-" * len(field) for field in header_fields]]:
         print(f'| {" | ".join(row_contents)} |')
 
-    # Print table converting lists to comma separated strings
+    # Print table converting lists to Markdown table rows
     for i, s in enumerate(software, start=1):
         default_cve = s["cves"][DEFAULT_CVE_ID]
         try:
@@ -122,7 +122,7 @@ def generate_markdown(software: Software) -> None:
             print(f"{i}: {err} - {s}", file=sys.stderr)
 
 
-def main() -> int:
+def main() -> None:
     """Set up logging and call the data loading, data conversion, and Markdown generation functions."""
     args: dict[str, str] = docopt.docopt(__doc__, version=__version__)
     # Validate and convert arguments as needed
@@ -159,4 +159,3 @@ def main() -> int:
 
     # Stop logging and clean up
     logging.shutdown()
-    return 0

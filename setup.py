@@ -78,7 +78,7 @@ setup(
     ],
     python_requires=">=3.10",
     # What does your project relate to?
-    keywords="skeleton",
+    keywords="log4j",
     packages=find_packages(where="src"),
     package_dir={"": "src"},
     py_modules=[splitext(basename(path))[0] for path in glob("src/*.py")],
