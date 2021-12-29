@@ -20,9 +20,9 @@ This repository contains Python code to:
    a Markdown table such as the output of the previous step:
    [`md-from-template`](src/md_from_template/md_from_template.py)
 
-## Common YML format ##
+## Common YAML format ##
 
-The common YML format looks like this:
+The common YAML format looks like this:
 
 ```yaml
 ---
