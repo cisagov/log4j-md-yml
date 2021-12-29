@@ -86,7 +86,7 @@ def generate_markdown(software: Software) -> None:
     for row_contents in [header_fields, ["-" * len(field) for field in header_fields]]:
         print(f'| {" | ".join(row_contents)} |')
 
-    # Print table converting lists to comma separated strings
+    # Print table converting lists to Markdown table rows
     for i, s in enumerate(software, start=1):
         default_cve = s["cves"][DEFAULT_CVE_ID]
         try:
