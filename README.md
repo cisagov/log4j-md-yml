@@ -8,13 +8,13 @@
 
 This repository contains Python code to:
 
-1. Translate the Markdown table of vulnerable software
+1. (Work in Progress) Translate the Markdown table of vulnerable software
    from [NCSC-NL/log4shell](https://github.com/NCSC-NL/log4shell) into a
-   common YML format: [`convert-nscs-nl`](src/mdyml/convert_ncsc_nl.py)
-1. Merge the YML from the previous step with the YML from
+   common YAML format: [`convert-nscs-nl`](src/mdyml/convert_ncsc_nl.py)
+1. Merge the YAML from the previous step with the YAML from
    [cisagov/log4j-affected-db](https://github.com/cisagov/log4j-affected-db)
-   into one grand YML file: [`normalize-yml`](src/yml/normalize_yml.py)
-1. Generate a Markdown table from the YML output of the previous step:
+   into one grand YAML file: [`normalize-yml`](src/yml/normalize_yml.py)
+1. Generate a Markdown table from the YAML output of the previous step:
    [`yml2md`](src/ymlmd/yml2md.py)
 1. Generate Markdown based on a Markdown template file and a file containing
    a Markdown table such as the output of the previous step:
