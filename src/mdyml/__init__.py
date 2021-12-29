@@ -10,6 +10,9 @@ from ._version import __version__  # noqa: F401
 
 DEFAULT_CVE_ID = "cve-2021-44228"
 
+# Match a Markdown link in the form
+# [link text](https://example.com/path/to/object)
+# with the named match groups text and link.
 MD_LINK_RE = re.compile(r"\[(?P<text>.*?)\]\((?P<link>\S*)\)")
 
 ORDERED_CVE_IDS = [
