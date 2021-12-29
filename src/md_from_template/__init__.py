@@ -4,4 +4,4 @@
 # package_name.__version__, which is used to get version information about this
 # Python package.
 # cisagov Libraries
-from mdyml import __version__  # noqa: F401
+from _log4j_md_yml_version import __version__  # noqa: F401

@@ -6,7 +6,8 @@
 # Standard Python Libraries
 import re
 
-from ._version import __version__  # noqa: F401
+# cisagov Libraries
+from _log4j_md_yml_version import __version__  # noqa: F401
 
 DEFAULT_CVE_ID = "cve-2021-44228"
 

@@ -44,7 +44,7 @@ def get_version(version_file):
 setup(
     name="log4j-md-yml",
     # Versions should comply with PEP440
-    version=get_version("src/mdyml/_version.py"),
+    version=get_version("src/_log4j_md_yml_version.py"),
     description="log4j-md-yml Python library",
     long_description=readme(),
     long_description_content_type="text/markdown",
