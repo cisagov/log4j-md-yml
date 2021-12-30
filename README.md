@@ -8,7 +8,7 @@
 
 This repository contains Python code to:
 
-1. (Work in Progress) Translate the Markdown table of vulnerable software
+1. (Work in Progress) Translate the Markdown tables of vulnerable software
    from [NCSC-NL/log4shell](https://github.com/NCSC-NL/log4shell) into a
    common YAML format: [`convert-nscs-nl`](src/mdyml/convert_ncsc_nl.py)
 1. Merge the YAML from the previous step with the YAML from
