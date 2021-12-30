@@ -23,7 +23,7 @@ jobs:
       - id: setup-python
         uses: actions/setup-python@v2
         with:
-          python-version: 3.9
+          python-version: "3.10"
       # We need the Go version and Go cache location for the actions/cache step,
       # so the Go installation must happen before that.
       - uses: actions/setup-go@v2
@@ -112,10 +112,6 @@ jobs:
       fail-fast: false
       matrix:
         python-version:
-          - "3.6"
-          - "3.7"
-          - "3.8"
-          - "3.9"
           - "3.10"
     steps:
       - uses: actions/checkout@v2
@@ -165,7 +161,7 @@ jobs:
       - id: setup-python
         uses: actions/setup-python@v2
         with:
-          python-version: 3.9
+          python-version: "3.10"
       - uses: actions/cache@v2
         env:
           BASE_CACHE_KEY: "${{ github.job }}-${{ runner.os }}-\
@@ -199,10 +195,6 @@ jobs:
       fail-fast: false
       matrix:
         python-version:
-          - "3.6"
-          - "3.7"
-          - "3.8"
-          - "3.9"
           - "3.10"
     steps:
       - uses: actions/checkout@v2

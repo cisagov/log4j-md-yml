@@ -2,7 +2,11 @@
 # https://coverage.readthedocs.io/en/latest/config.html
 
 [run]
-source = src/example
+source =
+    src/md_from_template
+    src/mdyml
+    src/yml
+    src/ymlmd
 omit =
 branch = true
 

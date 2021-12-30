@@ -1,7 +1,7 @@
 ---
 default_language_version:
   # force all unspecified python hooks to run python3
-  python: python3
+  python: python3.10
 
 repos:
   - repo: https://github.com/pre-commit/pre-commit-hooks
@@ -91,9 +91,11 @@ repos:
         name: bandit (everything else)
         exclude: tests
   - repo: https://github.com/psf/black
-    rev: 21.9b0
+    rev: 21.12b0
     hooks:
       - id: black
+        args:
+          - --target-version=py310
   - repo: https://gitlab.com/pycqa/flake8
     rev: 3.9.2
     hooks:
@@ -104,12 +106,17 @@ repos:
     rev: 5.9.3
     hooks:
       - id: isort
-  - repo: https://github.com/pre-commit/mirrors-mypy
-    rev: v0.910-1
-    hooks:
-      - id: mypy
-        additional_dependencies:
-          - types-setuptools
+  # mypy does not currently support the match statement added in 3.10. Please
+  # check the status of https://github.com/python/mypy/pull/10191 for the
+  # current status of support.
+  # - repo: https://github.com/pre-commit/mirrors-mypy
+  #   rev: v0.920
+  #   hooks:
+  #     - id: mypy
+  #       additional_dependencies:
+  #         - types-dateparser
+  #         - types-pytz
+  #         - types-PyYAML
   - repo: https://github.com/asottile/pyupgrade
     rev: v2.29.0
     hooks:

@@ -1,5 +1,5 @@
 """
-This is the setup module for the example project.
+This is the setup module for the log4j-md-yml project.
 
 Based on:
 
@@ -42,10 +42,10 @@ def get_version(version_file):
 
 
 setup(
-    name="example",
+    name="log4j-md-yml",
     # Versions should comply with PEP440
-    version=get_version("src/example/_version.py"),
-    description="Example Python library",
+    version=get_version("src/_log4j_md_yml_version.py"),
+    description="log4j-md-yml Python library",
     long_description=readme(),
     long_description_content_type="text/markdown",
     # Landing page for CISA's cybersecurity mission
@@ -53,8 +53,8 @@ setup(
     # Additional URLs for this project per
     # https://packaging.python.org/guides/distributing-packages-using-setuptools/#project-urls
     project_urls={
-        "Source": "https://github.com/cisagov/md-table-to-yml",
-        "Tracker": "https://github.com/cisagov/md-table-to-yml/issues",
+        "Source": "https://github.com/cisagov/log4j-md-yml",
+        "Tracker": "https://github.com/cisagov/log4j-md-yml/issues",
     },
     # Author details
     author="Cybersecurity and Infrastructure Security Agency",
@@ -74,20 +74,23 @@ setup(
         # Specify the Python versions you support here. In particular, ensure
         # that you indicate whether you support Python 2, Python 3 or both.
         "Programming Language :: Python :: 3",
-        "Programming Language :: Python :: 3.6",
-        "Programming Language :: Python :: 3.7",
-        "Programming Language :: Python :: 3.8",
-        "Programming Language :: Python :: 3.9",
+        "Programming Language :: Python :: 3.10",
     ],
-    python_requires=">=3.6",
+    python_requires=">=3.10",
     # What does your project relate to?
-    keywords="skeleton",
+    keywords="log4j markdown yaml",
     packages=find_packages(where="src"),
     package_dir={"": "src"},
-    package_data={"example": ["data/*.txt"]},
     py_modules=[splitext(basename(path))[0] for path in glob("src/*.py")],
-    include_package_data=True,
-    install_requires=["docopt", "schema", "setuptools >= 24.2.0"],
+    install_requires=[
+        "chevron",
+        "dateparser",
+        "docopt",
+        "pyyaml",
+        "ruamel.yaml",
+        "schema",
+        "setuptools >= 24.2.0",
+    ],
     extras_require={
         "test": [
             "coverage",
@@ -103,6 +106,14 @@ setup(
             "pytest",
         ]
     },
-    # Conveniently allows one to run the CLI tool as `example`
-    entry_points={"console_scripts": ["example = example.example:main"]},
+    # Conveniently allows one to run the CLI tools
+    entry_points={
+        "console_scripts": [
+            "convert-cisagov = mdyml.convert_cisagov:main",
+            "convert-nscs-nl = mdyml.convert_ncsc_nl:main",
+            "md-from-template = md_from_template.md_from_template:main",
+            "normalize-yml = yml.normalize_yml:main",
+            "yml2md = ymlmd.yml2md:main",
+        ]
+    },
 )
