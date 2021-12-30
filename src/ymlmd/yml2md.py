@@ -94,10 +94,10 @@ def generate_markdown(software: Software) -> None:
                 "| {vendor} | {product} | {affected_versions} | {patched_versions} | {status} | {vendor_links} | {notes} | {references} | {reporter} | {last_updated} |".format(
                     vendor=s["vendor"],
                     product=s["product"],
-                    affected_versions=",".join(
+                    affected_versions=", ".join(
                         [x for x in default_cve["affected_versions"] if len(x) != 0]
                     ),
-                    patched_versions=",".join(
+                    patched_versions=", ".join(
                         [x for x in default_cve["fixed_versions"] if len(x) != 0]
                     ),
                     status=s["status"],
