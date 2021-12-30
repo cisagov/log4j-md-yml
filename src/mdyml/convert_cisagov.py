@@ -83,7 +83,7 @@ def convert() -> None:
         if in_table:
             logging.debug("Appending row")
             table_rows.append(line)
-    logging.info("Done reading markdown table %d rows.", len(table_rows))
+    logging.info("Done reading Markdown table with %d rows.", len(table_rows))
 
     # Process all the data into a list of dictionaries
     out_dict_list = []
