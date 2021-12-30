@@ -1,7 +1,7 @@
 """convert_cisagov Markdown conversion tool.
 
-Fetches the contents of the cisagov/log4j-affected-db GitHub repository
-and converts it to YAML.
+Fetches the contents of the software list Markdown file in the
+cisagov/log4j-affected-db GitHub repository and converts it to YAML.
 
 EXIT STATUS
     This utility exits with one of the following values:
