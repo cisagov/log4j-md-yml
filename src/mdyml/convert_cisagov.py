@@ -94,11 +94,11 @@ def convert() -> None:
         logging.debug(
             "Processing row %d with %d columns: %s", row_count, len(in_row_list), row
         )
-        if len(in_row_list) != EXPECTED_COLUMN_COUNT:
+        if (row_column_count := len(in_row_list)) != EXPECTED_COLUMN_COUNT:
             logging.warning(
                 "Skipping row %d with unexpected number of columns %d: %s",
                 row_count,
-                len(in_row_list),
+                row_column_count,
                 in_row_list,
             )
             continue
