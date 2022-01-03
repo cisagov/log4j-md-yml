@@ -8,11 +8,13 @@ EXIT STATUS
     >0  An error occurred.
 
 Usage:
-  normalize-yml [--log-level=LEVEL] <yml_file>...
+  normalize-yml [--log-level=LEVEL] [--cisagov-format] <yml_file>...
   normalize-yml (-h | --help)
 
 Options:
   -h --help              Show this message.
+  -c --cisagov-format    Generate a YAML file using the cisagov software list
+                         format.
   --log-level=LEVEL      If specified, then the log level will be set to
                          the specified value.  Valid values are "debug", "info",
                          "warning", "error", and "critical". [default: info]
@@ -25,6 +27,7 @@ from typing import Any
 
 # Third-Party Libraries
 import docopt
+import ruamel.yaml
 from schema import And, Schema, SchemaError, Use
 import yaml
 
@@ -87,7 +90,21 @@ def main() -> None:
     )
 
     # Do that voodoo that you do so well...
-    print(yaml.dump(sort(normalize(munge(validated_args["<yml_file>"])))))
+    if validated_args["--cisagov-format"]:
+        doc = {
+            "version": "1.0",
+            "software": sort(normalize(munge(validated_args["<yml_file>"]))),
+        }
+    else:
+        doc = sort(normalize(munge(validated_args["<yml_file>"])))
+
+    yml = ruamel.yaml.YAML()
+    yml.indent(mapping=2, offset=2, sequence=4)
+    yml.explicit_start = True
+    yml.explicit_end = True
+    yml.sort_base_mapping_type_on_output = False
+    yml.allow_unicode = True
+    yml.dump(doc, sys.stdout)
 
     # Stop logging and clean up
     logging.shutdown()
