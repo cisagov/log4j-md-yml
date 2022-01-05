@@ -172,7 +172,7 @@ def convert() -> None:
         if not key.isalpha():
             non_letter_groups.extend(out_dict_groups[key])
             del out_dict_groups[key]
-    out_dict_groups["0-9"] = non_letter_groups
+    out_dict_groups["Non-Alphabet"] = non_letter_groups
 
     for key, data in out_dict_groups.items():
         filename = SOFTWARE_LIST_FILE_FORMAT.format(key)
