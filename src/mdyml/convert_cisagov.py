@@ -147,7 +147,6 @@ def convert() -> None:
 
         out_dict["notes"] = in_row_dict["notes"]
         out_dict["references"] = [in_row_dict["references"]]
-        out_dict["reporter"] = "cisagov"
         # Parse the existing date, or not
         if parsed_date := dateparser.parse(in_row_dict["last_updated"]):
             # Check if parsed date has a timezone
@@ -178,7 +177,16 @@ def convert() -> None:
         filename = SOFTWARE_LIST_FILE_FORMAT.format(key)
         logging.debug("Writing data for '%s' to '%s'", key, filename)
         with open(filename, "w") as out_file:
-            doc = {"version": "1.0", "software": data}
+            doc = {
+                "version": "1.0",
+                "owners": [
+                    {
+                        "name": "cisagov",
+                        "url": "https://github.com/cisagov/log4j-affected-db",
+                    }
+                ],
+                "software": data,
+            }
 
             yaml = ruamel.yaml.YAML()
             yaml.indent(mapping=2, offset=2, sequence=4)

@@ -27,6 +27,9 @@ The common YAML format looks like this:
 ```yaml
 ---
 version: '1.0'
+owners:
+  - name: cisagov
+    url: https://github.com/cisagov/log4j-affected-db
 software:
   -  cves:
       - affected_versions:
