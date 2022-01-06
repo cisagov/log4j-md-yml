@@ -22,6 +22,7 @@ Options:
 # Standard Python Libraries
 from datetime import datetime, timezone
 import html
+from itertools import groupby
 import logging
 import sys
 from typing import Any
@@ -36,6 +37,7 @@ from schema import And, Schema, SchemaError, Use
 from . import DEFAULT_CVE_ID, MD_LINK_RE, ORDERED_CVE_IDS, __version__
 
 RAW_URL = "https://raw.githubusercontent.com/cisagov/log4j-affected-db/develop/SOFTWARE-LIST.md"
+SOFTWARE_LIST_FILE_FORMAT = "cisagov_{}.yml"
 
 EXPECTED_COLUMN_NAMES = [
     "vendor",
@@ -160,15 +162,31 @@ def convert() -> None:
 
         out_dict_list.append(out_dict)
 
-    doc = {"version": "1.0", "software": out_dict_list}
+    out_dict_groups = {
+        k: list(g)
+        for k, g in groupby(out_dict_list, key=lambda s: s["vendor"][0].upper())
+    }
 
-    yaml = ruamel.yaml.YAML()
-    yaml.indent(mapping=2, offset=2, sequence=4)
-    yaml.explicit_start = True
-    yaml.explicit_end = True
-    yaml.sort_base_mapping_type_on_output = False
-    yaml.allow_unicode = True
-    yaml.dump(doc, sys.stdout)
+    non_letter_groups = list()
+    for key in list(out_dict_groups.keys()):
+        if not key.isalpha():
+            non_letter_groups.extend(out_dict_groups[key])
+            del out_dict_groups[key]
+    out_dict_groups["Non-Alphabet"] = non_letter_groups
+
+    for key, data in out_dict_groups.items():
+        filename = SOFTWARE_LIST_FILE_FORMAT.format(key)
+        logging.debug("Writing data for '%s' to '%s'", key, filename)
+        with open(filename, "w") as out_file:
+            doc = {"version": "1.0", "software": data}
+
+            yaml = ruamel.yaml.YAML()
+            yaml.indent(mapping=2, offset=2, sequence=4)
+            yaml.explicit_start = True
+            yaml.explicit_end = True
+            yaml.sort_base_mapping_type_on_output = False
+            yaml.allow_unicode = True
+            yaml.dump(doc, out_file)
 
 
 def main() -> None:
