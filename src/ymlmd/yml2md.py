@@ -111,7 +111,9 @@ def generate_markdown(software: Software) -> None:
                     ),
                     notes=s["notes"],
                     references="; ".join([x for x in s["references"] if len(x) != 0]),
-                    reporter=s["reporter"],
+                    reporter=", ".join(
+                        f"[{i['name']}]({i['url']})" for i in s["reporter"]
+                    ),
                     # create a datetime from string and print date portion
                     last_updated=dateparser.parse(s["last_updated"]).strftime(
                         "%Y-%m-%d"

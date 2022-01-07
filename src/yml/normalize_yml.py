@@ -34,27 +34,39 @@ import yaml
 from . import __version__
 
 Software = list[dict[str, Any]]
+Owners = list[dict[str, str]]
+YamlData = dict[str, Software | Owners]
 
 
-def munge(filenames: list[str]) -> Software:
-    """Munge together the "software" nodes from YAML files into a single Python dictionary."""
+def munge(filenames: list[str], canonical=False) -> YamlData:
+    """Munge together the "owners" and "software" nodes from YAML files into a single Python dictionary."""
     ans = []
+    owners = []
     for filename in filenames:
         with open(filename, "r") as f:
-            ans.extend(yaml.safe_load(f)["software"])
+            loaded_data = yaml.safe_load(f)
+            if "owners" in loaded_data:
+                owners.extend(loaded_data["owners"])
+            if not canonical:
+                for product in loaded_data["software"]:
+                    product["reporter"] = loaded_data.get("owners", [])
+            ans.extend(loaded_data["software"])
 
-    return ans
+    # De-duplicate owner information
+    owners = list({i["name"] + i["url"]: i for i in owners}.values())
+
+    return {"owners": owners, "software": ans}
 
 
-def normalize(software: Software) -> Software:
+def normalize(data: YamlData) -> YamlData:
     """Normalize the software entries."""
-    return software
+    return data
 
 
-def sort(software: Software) -> Software:
+def sort(data: YamlData) -> YamlData:
     """Sort the software entries."""
-    software.sort(key=lambda x: (x["vendor"] + x["product"]).lower())
-    return software
+    data["software"].sort(key=lambda x: (x["vendor"] + x["product"]).lower())
+    return data
 
 
 def main() -> None:
@@ -91,12 +103,17 @@ def main() -> None:
 
     # Do that voodoo that you do so well...
     if validated_args["--cisagov-format"]:
+        data: YamlData = sort(
+            normalize(munge(validated_args["<yml_file>"], canonical=True))
+        )
         doc = {
             "version": "1.0",
-            "software": sort(normalize(munge(validated_args["<yml_file>"]))),
+            "owners": data["owners"],
+            "software": data["software"],
         }
     else:
-        doc = sort(normalize(munge(validated_args["<yml_file>"])))
+        data: YamlData = sort(normalize(munge(validated_args["<yml_file>"])))
+        doc = data["software"]
 
     yml = ruamel.yaml.YAML()
     yml.indent(mapping=2, offset=2, sequence=4)
