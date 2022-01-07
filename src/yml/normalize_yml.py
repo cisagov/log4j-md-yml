@@ -39,7 +39,7 @@ Software = list[dict[str, Any]]
 def munge(
     filenames: list[str], owners: list[dict[str, str]] = [], canonical=False
 ) -> Software:
-    """Munge together the "software" nodes from YAML files into a single Python dictionary."""
+    """Munge together the "owners" and "software" nodes from YAML files into a single Python dictionary."""
     ans = []
     for filename in filenames:
         with open(filename, "r") as f:
