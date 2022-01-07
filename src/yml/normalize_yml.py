@@ -36,13 +36,20 @@ from . import __version__
 Software = list[dict[str, Any]]
 
 
-def munge(filenames: list[str]) -> Software:
+def munge(
+    filenames: list[str], owners: list[dict[str, str]] = [], canonical=False
+) -> Software:
     """Munge together the "software" nodes from YAML files into a single Python dictionary."""
     ans = []
     for filename in filenames:
         with open(filename, "r") as f:
-            ans.extend(yaml.safe_load(f)["software"])
-
+            loaded_data = yaml.safe_load(f)
+            if "owners" in loaded_data:
+                owners.extend(loaded_data["owners"])
+            if not canonical:
+                for product in loaded_data["software"]:
+                    product["reporter"] = loaded_data.get("owners", [])
+            ans.extend(loaded_data["software"])
     return ans
 
 
@@ -91,9 +98,20 @@ def main() -> None:
 
     # Do that voodoo that you do so well...
     if validated_args["--cisagov-format"]:
+        # List of the owners from the processed files.
+        owners = []
+
+        data = sort(
+            normalize(munge(validated_args["<yml_file>"], owners, canonical=True))
+        )
+
+        # De-duplicate owner information
+        owners = list({i["name"] + i["url"]: i for i in owners}.values())
+
         doc = {
             "version": "1.0",
-            "software": sort(normalize(munge(validated_args["<yml_file>"]))),
+            "owners": owners,
+            "software": data,
         }
     else:
         doc = sort(normalize(munge(validated_args["<yml_file>"])))
