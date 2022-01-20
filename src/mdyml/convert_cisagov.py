@@ -193,7 +193,9 @@ def convert() -> None:
                         "url": "https://github.com/cisagov/log4j-affected-db",
                     }
                 ],
-                "software": data,
+                "software": sorted(
+                    data, key=lambda p: (p["vendor"].lower(), p["product"].lower())
+                ),
             }
 
             yaml = ruamel.yaml.YAML()
