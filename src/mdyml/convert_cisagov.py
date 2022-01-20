@@ -161,9 +161,14 @@ def convert() -> None:
 
         out_dict_list.append(out_dict)
 
+    # Sort in the same manner groupby() will group entries
+    out_dict_list.sort(key=lambda p: p["vendor"][0].lower())
+
+    logging.debug("Total rows for grouping: %d", len(out_dict_list))
+
     out_dict_groups = {
-        k: list(g)
-        for k, g in groupby(out_dict_list, key=lambda s: s["vendor"][0].upper())
+        k.upper(): list(g)
+        for k, g in groupby(out_dict_list, key=lambda s: s["vendor"][0].lower())
     }
 
     non_letter_groups = list()
@@ -173,10 +178,13 @@ def convert() -> None:
             del out_dict_groups[key]
     out_dict_groups["Non-Alphabet"] = non_letter_groups
 
+    total_group_count = 0
     for key, data in out_dict_groups.items():
         filename = SOFTWARE_LIST_FILE_FORMAT.format(key)
         logging.debug("Writing data for '%s' to '%s'", key, filename)
         with open(filename, "w") as out_file:
+            group_count = len(data)
+            total_group_count += group_count
             doc = {
                 "version": "1.0",
                 "owners": [
@@ -195,6 +203,10 @@ def convert() -> None:
             yaml.sort_base_mapping_type_on_output = False
             yaml.allow_unicode = True
             yaml.dump(doc, out_file)
+
+            logging.debug("Group '%s' rows: %d", key, group_count)
+
+    logging.debug("Total grouped rows processed: %d", total_group_count)
 
 
 def main() -> None:
