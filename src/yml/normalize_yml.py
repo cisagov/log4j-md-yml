@@ -65,7 +65,7 @@ def normalize(data: YamlData) -> YamlData:
 
 def sort(data: YamlData) -> YamlData:
     """Sort the software entries."""
-    data["software"].sort(key=lambda x: (x["vendor"] + x["product"]).lower())
+    data["software"].sort(key=lambda x: (x["vendor"].lower(), x["product"].lower()))
     return data
 
 
