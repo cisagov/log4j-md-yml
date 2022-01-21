@@ -87,6 +87,11 @@ def convert() -> None:
             table_rows.append(line)
     logging.info("Done reading Markdown table with %d rows.", len(table_rows))
 
+    # The timestamp to use if there is no timestamp in the row. Since the
+    # conversion is logically one action it should be the same for all converted
+    # data.
+    default_timestamp = datetime.now(timezone.utc).isoformat(timespec="seconds")
+
     # Process all the data into a list of dictionaries
     out_dict_list = []
     row_count = 0
@@ -155,9 +160,7 @@ def convert() -> None:
                 parsed_date.replace(tzinfo=timezone.utc)
             out_dict["last_updated"] = parsed_date.isoformat(timespec="seconds")
         else:
-            out_dict["last_updated"] = datetime.now(timezone.utc).isoformat(
-                timespec="seconds"
-            )
+            out_dict["last_updated"] = default_timestamp
 
         out_dict_list.append(out_dict)
 
