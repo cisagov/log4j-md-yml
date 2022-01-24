@@ -120,8 +120,8 @@ def generate_markdown(software: Software) -> None:
                     ),
                 )
             )
-        except KeyError as err:
-            print(f"{i}: {err} - {s}", file=sys.stderr)
+        except KeyError:
+            logging.exception("%d: %s", i, s)
 
 
 def main() -> None:
