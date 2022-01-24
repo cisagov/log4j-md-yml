@@ -53,6 +53,14 @@ EXPECTED_COLUMN_NAMES = [
 EXPECTED_COLUMN_COUNT = len(EXPECTED_COLUMN_NAMES)
 
 
+class NoAliasesRoundTripRepresenter(ruamel.yaml.representer.RoundTripRepresenter):
+    """Helper class to eliminate YAML anchors in YAML output."""
+
+    def ignore_aliases(self, data):
+        """Override the default method to always ignore aliases."""
+        return True
+
+
 def convert() -> None:
     """Parse the Markdown at the given URL and convert it to YAML."""
     # Get the Markdown
@@ -86,6 +94,11 @@ def convert() -> None:
             logging.debug("Appending row")
             table_rows.append(line)
     logging.info("Done reading Markdown table with %d rows.", len(table_rows))
+
+    # The timestamp to use if there is no timestamp in the row. Since the
+    # conversion is logically one action it should be the same for all converted
+    # data.
+    default_timestamp = datetime.now(timezone.utc).isoformat(timespec="seconds")
 
     # Process all the data into a list of dictionaries
     out_dict_list = []
@@ -155,15 +168,18 @@ def convert() -> None:
                 parsed_date.replace(tzinfo=timezone.utc)
             out_dict["last_updated"] = parsed_date.isoformat(timespec="seconds")
         else:
-            out_dict["last_updated"] = datetime.now(timezone.utc).isoformat(
-                timespec="seconds"
-            )
+            out_dict["last_updated"] = default_timestamp
 
         out_dict_list.append(out_dict)
 
+    # Sort in the same manner groupby() will group entries
+    out_dict_list.sort(key=lambda p: p["vendor"][0].lower())
+
+    logging.debug("Total rows for grouping: %d", len(out_dict_list))
+
     out_dict_groups = {
-        k: list(g)
-        for k, g in groupby(out_dict_list, key=lambda s: s["vendor"][0].upper())
+        k.upper(): list(g)
+        for k, g in groupby(out_dict_list, key=lambda s: s["vendor"][0].lower())
     }
 
     non_letter_groups = list()
@@ -173,10 +189,13 @@ def convert() -> None:
             del out_dict_groups[key]
     out_dict_groups["Non-Alphabet"] = non_letter_groups
 
+    total_group_count = 0
     for key, data in out_dict_groups.items():
         filename = SOFTWARE_LIST_FILE_FORMAT.format(key)
         logging.debug("Writing data for '%s' to '%s'", key, filename)
         with open(filename, "w") as out_file:
+            group_count = len(data)
+            total_group_count += group_count
             doc = {
                 "version": "1.0",
                 "owners": [
@@ -185,16 +204,23 @@ def convert() -> None:
                         "url": "https://github.com/cisagov/log4j-affected-db",
                     }
                 ],
-                "software": data,
+                "software": sorted(
+                    data, key=lambda p: (p["vendor"].lower(), p["product"].lower())
+                ),
             }
 
             yaml = ruamel.yaml.YAML()
+            yaml.Representer = NoAliasesRoundTripRepresenter
             yaml.indent(mapping=2, offset=2, sequence=4)
             yaml.explicit_start = True
             yaml.explicit_end = True
             yaml.sort_base_mapping_type_on_output = False
             yaml.allow_unicode = True
             yaml.dump(doc, out_file)
+
+            logging.debug("Group '%s' rows: %d", key, group_count)
+
+    logging.debug("Total grouped rows processed: %d", total_group_count)
 
 
 def main() -> None:
