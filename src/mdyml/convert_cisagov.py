@@ -53,6 +53,14 @@ EXPECTED_COLUMN_NAMES = [
 EXPECTED_COLUMN_COUNT = len(EXPECTED_COLUMN_NAMES)
 
 
+class NoAliasesRoundTripRepresenter(ruamel.yaml.representer.RoundTripRepresenter):
+    """Helper class to eliminate YAML anchors in YAML output."""
+
+    def ignore_aliases(self, data):
+        """Override the default method to always ignore aliases."""
+        return True
+
+
 def convert() -> None:
     """Parse the Markdown at the given URL and convert it to YAML."""
     # Get the Markdown
@@ -202,6 +210,7 @@ def convert() -> None:
             }
 
             yaml = ruamel.yaml.YAML()
+            yaml.Representer = NoAliasesRoundTripRepresenter
             yaml.indent(mapping=2, offset=2, sequence=4)
             yaml.explicit_start = True
             yaml.explicit_end = True

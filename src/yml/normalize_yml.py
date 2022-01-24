@@ -38,6 +38,14 @@ Owners = list[dict[str, str]]
 YamlData = dict[str, Software | Owners]
 
 
+class NoAliasesRoundTripRepresenter(ruamel.yaml.representer.RoundTripRepresenter):
+    """Helper class to eliminate YAML anchors in YAML output."""
+
+    def ignore_aliases(self, data):
+        """Override the default method to always ignore aliases."""
+        return True
+
+
 def munge(filenames: list[str], canonical=False) -> YamlData:
     """Munge together the "owners" and "software" nodes from YAML files into a single Python dictionary."""
     ans = []
@@ -116,6 +124,7 @@ def main() -> None:
         doc = data["software"]
 
     yml = ruamel.yaml.YAML()
+    yml.Representer = NoAliasesRoundTripRepresenter
     yml.indent(mapping=2, offset=2, sequence=4)
     yml.explicit_start = True
     yml.explicit_end = True
