@@ -32,7 +32,7 @@ import docopt
 from schema import And, Schema, SchemaError, Use
 import yaml
 
-from . import MD_LINK_RE, ORDERED_FIELD_NAMES, __version__
+from . import MD_LINK_RE, __version__
 
 RAW_URL = "https://raw.githubusercontent.com/NCSC-NL/log4shell/main/software/README.md"
 
@@ -45,6 +45,17 @@ EXPECTED_COLUMN_NAMES = [
     "vendor_link",
 ]
 EXPECTED_COLUMN_COUNT = len(EXPECTED_COLUMN_NAMES)
+ORDERED_FIELD_NAMES = [
+    "Supplier",
+    "Product",
+    "Version (see Status)",
+    "Status CVE-2021-4104",
+    "Status CVE-2021-44228",
+    "Status CVE-2021-45046",
+    "Status CVE-2021-45105",
+    "Notes",
+    "Links",
+]
 
 
 def convert() -> None:

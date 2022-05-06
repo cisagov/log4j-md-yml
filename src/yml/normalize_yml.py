@@ -33,9 +33,10 @@ import yaml
 
 from . import __version__
 
-Software = list[dict[str, Any]]
 Owners = list[dict[str, str]]
-YamlData = dict[str, Software | Owners]
+Software = list[dict[str, Any]]
+YamlData = dict[str, Owners | Software]
+OutputYamlData = Software | dict[str, str | Owners | Software]
 
 
 class NoAliasesRoundTripRepresenter(ruamel.yaml.representer.RoundTripRepresenter):
@@ -110,17 +111,17 @@ def main() -> None:
     )
 
     # Do that voodoo that you do so well...
+    data: YamlData
+    doc: OutputYamlData
     if validated_args["--cisagov-format"]:
-        data: YamlData = sort(
-            normalize(munge(validated_args["<yml_file>"], canonical=True))
-        )
+        data = sort(normalize(munge(validated_args["<yml_file>"], canonical=True)))
         doc = {
             "version": "1.0",
             "owners": data["owners"],
             "software": data["software"],
         }
     else:
-        data: YamlData = sort(normalize(munge(validated_args["<yml_file>"])))
+        data = sort(normalize(munge(validated_args["<yml_file>"])))
         doc = data["software"]
 
     yml = ruamel.yaml.YAML()

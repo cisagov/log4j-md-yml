@@ -19,6 +19,7 @@ Options:
 """
 
 # Standard Python Libraries
+from datetime import datetime, timezone
 import logging
 import sys
 from typing import Any
@@ -90,6 +91,8 @@ def generate_markdown(software: Software) -> None:
     for i, s in enumerate(software, start=1):
         default_cve = s["cves"][DEFAULT_CVE_ID]
         try:
+            if not (last_updated := dateparser.parse(s["last_updated"])):
+                last_updated = datetime.now(timezone.utc)
             print(
                 "| {vendor} | {product} | {affected_versions} | {patched_versions} | {status} | {vendor_links} | {notes} | {references} | {reporter} | {last_updated} |".format(
                     vendor=s["vendor"],
@@ -125,9 +128,7 @@ def generate_markdown(software: Software) -> None:
                         f"[{i['name']}]({i['url']})" for i in s["reporter"]
                     ),
                     # create a datetime from string and print date portion
-                    last_updated=dateparser.parse(s["last_updated"]).strftime(
-                        "%Y-%m-%d"
-                    ),
+                    last_updated=last_updated.strftime("%Y-%m-%d"),
                 )
             )
         except KeyError:
