@@ -1,10 +1,17 @@
 # log4j-md-yml #
 
+<<<<<<< HEAD
 [![GitHub Build Status](https://github.com/cisagov/log4j-md-yml/workflows/build/badge.svg)](https://github.com/cisagov/log4j-md-yml/actions)
 [![Coverage Status](https://coveralls.io/repos/github/cisagov/log4j-md-yml/badge.svg?branch=develop)](https://coveralls.io/github/cisagov/log4j-md-yml?branch=develop)
 [![Total alerts](https://img.shields.io/lgtm/alerts/g/cisagov/log4j-md-yml.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/cisagov/log4j-md-yml/alerts/)
 [![Language grade: Python](https://img.shields.io/lgtm/grade/python/g/cisagov/log4j-md-yml.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/cisagov/log4j-md-yml/context:python)
 [![Known Vulnerabilities](https://snyk.io/test/github/cisagov/log4j-md-yml/develop/badge.svg)](https://snyk.io/test/github/cisagov/log4j-md-yml)
+=======
+[![GitHub Build Status](https://github.com/cisagov/skeleton-python-library/workflows/build/badge.svg)](https://github.com/cisagov/skeleton-python-library/actions)
+[![CodeQL](https://github.com/cisagov/skeleton-python-library/workflows/CodeQL/badge.svg)](https://github.com/cisagov/skeleton-python-library/actions/workflows/codeql-analysis.yml)
+[![Coverage Status](https://coveralls.io/repos/github/cisagov/skeleton-python-library/badge.svg?branch=develop)](https://coveralls.io/github/cisagov/skeleton-python-library?branch=develop)
+[![Known Vulnerabilities](https://snyk.io/test/github/cisagov/skeleton-python-library/develop/badge.svg)](https://snyk.io/test/github/cisagov/skeleton-python-library)
+>>>>>>> 65604c7e134491f497f612f6eaebded8f411bec5
 
 This repository contains Python code to:
 
